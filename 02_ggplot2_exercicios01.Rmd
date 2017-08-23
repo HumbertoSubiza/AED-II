@@ -1,0 +1,294 @@
+---
+title: "Oficina AED - Parte II"
+author: "Walter Humberto Subiza Pina"
+date: "16 de junho de 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+---
+
+## Curso de Análise Exploratório de Dados com R - Parte II
+## Visualização de dados com _ggplot2()_
+
+## Reforço de Exercícios
+
+---
+
+#### Exercícios 01
+
+Vamos a praticar os conhecimentos vistos e completar o primeiro ggplot2. 
+
+Nos exercícios a seguir, toda instrução que tenha a 
+
+#### **_<span style="color:blue">seguinte formatação</span>_**
+
+é para sua execução no fragmento de código R que segue ou na consola do RStudio (janela 3).
+
+---
+
+Usaremos a base de dados _**datasets::mtcars**_. 
+
+#### **_<span style="color:blue">Procure na consola ?mtcars e conheça os dados.</span>_**
+
+Como primeiro passo:
+
+#### **_<span style="color:blue">carregue a biblioteca **ggplot2**, use _head()_ e _str()_ para conhecer os dados, se deseja ver o intervalo de valores de cada variável, use _summary()_, e finalmente salve os dados como "mtc".</span>_**
+
+---
+
+```{r}
+# Solução
+
+```
+
+---
+
+#### **_<span style="color:blue">Responda às seguintes preguntas:</span>_**
+
+1- qual as dimensões do dataframe?
+
+2- quantas variáveis tem e de que classe?
+
+3- que variáveis ao seu critério poderiam ser fatores para um posterior análise?
+
+---
+
+Segundo passo: fazer o primeiro gráfico ggplot usando o dataframe criado, "mtc".
+
+O gráfico a ser feito, deve mostrar como pontos os valores que terão: 
+
+  - eixo "x" a variável "cyl" (número de cilindros) e 
+
+  - eixo "y" a variável "mpg" (milhas por galão).
+
+**Solução:**
+
+---
+
+```{r}
+# Solução
+
+```
+
+---
+
+Notamos duas coisas no gráfico:
+
+1- o consumo tende a ser maior quanto maior o número de cilindros
+
+2- como a variável "cyl" foi tratada como contínua, temos valores de quantidade de cilindros que não existem nos dados, por exemplo: 3, 5 ou 7.
+
+Para solucionar esse problema, deve ser explicitamente colocado que a variável "cyl" não é continua, mas categórica. Isso pode ser feito através do uso de **fator(cyl)** na estética dos dados.
+
+Terceiro passo: 
+
+#### **_<span style="color:blue">usando o fragmento de código anterior, refaza o gráfico com "cyl" como fator.</span>_**
+
+---
+
+```{r}
+# Solução
+
+```
+
+---
+
+Veja que agora o gráfico contém apenas a quantidade certa de cilindros. 
+
+#### **_<span style="color:blue">Repita o exercício escolhendo outras variáveis, use factor() se necessário.</span>_**
+
+---
+
+```{r}
+# Solução
+
+```
+
+---
+
+Vamos explorar um pouco mais as camadas complementares que já vimos
+
+#### **_<span style="color:blue">A seguir faça um  gráfico do peso do carro, "wt" versus a quantidade de milhas por galão, "mpg", use a geometria de pontos sem nenhuma especificidade.</span>_** 
+
+Espera-se ver que o rendimento diminua enquanto o peso aumenta.
+
+---
+
+```{r}
+# Solução:
+
+```
+
+---
+
+No seguinte passo, vamos adicionar ao código anterior, uma cor acorde o número de cilindros. 
+
+Para definir o color dos nossos pontos, usamos **col = ..."** dentro do **aes** onde tanto podemos indicar tanto uma cor só como uma escala de cores. 
+
+Como a intenção é colorir os pontos acorde ao número de cilindros podemos usar a variável "cyl" (col = cyl).
+
+**Solução:**
+
+---
+
+```{r}
+# Solução:
+
+```
+
+---
+
+Veja que a legenda foi automáticamente gerada e colocada à direita.
+
+Note também o mesmo problema anterior da variável "cyl" sendo tratada como contínua, nos introduze no gráfico cores e números de cilindros indesejados. 
+
+O problema se resolve, da mesma forma, colocando a variavel como **factor(...)**, ou se desejar uma solução mais radical, transforme a variável em fator no dataframe.
+
+#### **_<span style="color:blue">Refaça o gráfico com as cores como variável categórica.</span>_**
+
+---
+
+```{r}
+# Solução:
+
+```
+
+---
+
+No gráfico conseguimos individualizar o rendimento olhando para três variáveis ao mesmo tempo, peso, milhas por galão e número de cilindros, esse último representado pela cor.
+
+E se fosse possível adicionar uma outra variável, como por exemplo tipo de transmissão? 
+
+A variável "am" nos indica se o carro é automático (0) o não é (1). 
+
+Podemos colocar o tamanho do ponto (outra estética ou apariência), como mais um elemento gráfico. Isso é feito com o argumento **size* =** e assignando a variável "am " com fator novamente. 
+
+Finalmente é adequado adicionar uma transparência como já feito anteriormente. Essas novas opções são adicionadas no **aes()** da primeira camada.
+
+
+```{r warning=FALSE}
+# Solução:
+
+
+```
+
+---
+
+Mais sobre estética...
+
+Nos exercícios anteriores mapeamos as cores tanto numa escala contínua como categórica. 
+
+Um outro elemento estético é a forma dos pontos, dada por **shape**. Porém existem uma quantidade finita de formas a serem atribuídas a pontos, por isso se tentamos mapear a forma com uma variável contínua, teremos uma mensagem de erro. 
+
+_**A forma como elemento estético tem sentido apenas para variáveis categóricas!!!**_
+
+---
+
+#### **_<span style="color:blue">Mude o fragmento anterior de código para mapear em vez do tamanho, a forma (shape).</span>_**
+
+#### **_<span style="color:blue">Retire o argumento alpha, adicione o tema clássico e veja o resultado.</span>_**
+
+---
+
+```{r warning=FALSE}
+# Solução:
+
+
+```
+
+---
+
+####Um cuidado muito especial deve-se ter em ter sempre o gráfico o menos poluído possível. Se desejamos comparar ou mostrar várias variáveis, analise se não é melhor preparar mais de um gráfico. 
+
+No gráfico acima estamos mostrando quatro variáveis, "wt" e "mpg" nos eixos X e Y e duas com argumentos de estética, "cyl" e "am".
+
+---
+
+FIM DE EXERCÍCIOS 01
+
+---
+
+###Resumo de elementos estéticos
+
+---
+
+| Elemento estético (aes) | Descrição                         |
+|-------------------------|-----------------------------------|
+| x                       | variável a ser mapeada no eixo x  |
+| y                       | variável a ser mapeada no eixo y  |
+|colour ou col            |cor dos pontos ou formas geométrica|
+| fill                    | cor de preenchimento              |
+| size                    | tamanho dos pontos ou da geometria|
+| alpha                   | transparência em percentagem      |
+| linetype                | tipo de linha a ser desenhada     |
+| labels                  | texto a colocar do gráfico ou eixos  |
+| shape                   | forma                             |
+
+---
+
+
+Recomendações para uma eficiente decodificação das variáveis num gráfico
+
+Variáveis contínuas (do menos eficiente ao mais eficiente):
+
+   - espectro o paleta de cores
+   
+   - espectro monocromático
+   
+   - espectro na escala de cinzas
+   
+   - área (elementos diferenciados pelo tamanho)
+   
+   - ângulo e largura de linhas
+   
+   - posição de diversos elementos no mesmo gráfico
+   
+   - posição de diversos elementos numa escala comun
+ 
+ ![](decoding_continuous_variables.png)
+   
+---   
+
+variáveis categóricas
+
+  - formas de tipo cheio ou preenchidas
+  
+      - diferentes formas numa cor só
+      
+      - uma forma em cores sequenciais
+      
+      - uma forma seguindo teoría das cores
+  
+  - formas 2
+      
+      - uma forma hachurada com diferentes grossores
+      
+      - formas diferentes e vazias
+      
+      - etiquetas com texto
+      
+  - linhas
+  
+      - diferente largura
+      
+      - diferentes tipos
+      
+      - diferentes cores
+    
+![](decoding_categorical_variables.png)
+
+---
+
+FIM DO EXERCÍCIO 01
+
+---
+
+```{r}
+sessionInfo()
+
+```

@@ -1,0 +1,161 @@
+---
+title: "Gráficos com plot() -  Soluções"
+author: "Walter Humberto Subiza Piña"
+date: "19 de abril de 2017"
+output: html_document
+---
+
+#####Soluções para os exercícios
+
+---
+
+Exercício 01
+
+Usando o comando já mostrado de:
+
+_plot(cars\$speed, cars\$dist)_
+
+1- adicionar um título principal, um subtítulo (sugestão: "Fonte: R datasets::iris"), legendas em ambos eixos e re-defina os limites de cada um.
+
+2- mude o tipo de símbolo para triângulo cheio e de cor vermelha
+
+---
+
+```{r}
+plot(cars$speed, cars$dist,
+     xlim = c(0,30),
+     ylim = c(0,150),
+     pch  = 17,
+     col  = "red",
+     main = "Distância percorrida vs. velocidade",
+     sub  = "Fonte: R datasets::iris",
+     xlab = "Velocidade em milhas",
+     ylab = "Distância percorrida em milhas")
+```
+
+---
+
+Exercício 02a
+
+Considerando o comando _hist_ no segundo exemplo apresentado, fazer o histograma da variável _Sepal.Lenght_ dos dados _iris_.
+
+Redefina os limites dos eixos, coloque título principal, subtítulo e nos nomes nos eixos e defina uma cor verde para o histograma.
+
+---
+
+```{r}
+hist(iris$Sepal.Width,
+     xlim = c(1,5),
+     ylim = c(0,40),
+     main = "Histograma de largura de sépala",
+     sub  = "Fonte: R datasets::iris",
+     xlab = "Largura em cm",
+     ylab = "Frequência",
+     col  = "green")
+
+```
+
+---
+
+Exercício 02b
+
+Com o comando do exercício anterior, experimente usar o argumento _breaks_ com 5,10,20 e 50 intervalos. Que acontece com o eixo de Frequências? e com 50 intervalos, o que acontece com o histograma?
+
+---
+
+```{r}
+hist(iris$Sepal.Width,
+     xlim = c(1,5),
+     ylim = c(0,30),
+     main = "Histograma de largura de sépala",
+     xlab = "Largura em cm",
+     ylab = "Frequência",
+     col  = "green", 
+     breaks = 20)
+
+```
+
+
+---
+
+Exercício 03
+
+Na linha de comando experimente:
+
+plot(table(iris$Species))
+
+```{r}
+plot(table(iris$Species))
+```
+
+---
+
+Exercício 04
+
+Com os conhecimentos de argumentos já conhecidos: coloque título principal, subtítulo, nome no eixo "y" e dê uma cor diferente para cada barra (dica: o argumento _col_ aceita um vetor com os nomes das cores (inglês), tipo _c("cor1", "cor2",...)_).
+
+---
+```{r}
+barplot(table(iris$Species),
+        main = "Tabela de Frequência das espécies de Iris",
+        ylab = "Frequência",
+        col  = c("green", "red", "blue"))
+```
+
+---
+
+FIM DA PRIMEIRA PARTE
+
+---
+
+---
+
+SEGUNDA PARTE
+
+Para fazer os seguintes exercícios necessita dos dados:
+
+---
+
+```{r}
+set.seed(12345) # semente serve para reprodução de valores iguais em dados aleatórios (ou  seudo...)
+x<-1:300
+y<-runif(x,-5,5)
+```
+
+--
+
+Exercício 05
+
+Usando o comando anterior, modique o argumento _tcl_ para 0.5 e experimente modificar apenas o primeiro valor de _mgp_ para 1. Que acontece com o nome dos eixos?
+
+---
+
+```{r}  
+
+par(tcl = 0.5, # valor padrão, controla o tamanho das marcas e a direção, valor negativo = marca fora
+    mgp = c(1,1,0)) 
+
+plot(x,y) 
+```
+
+---
+
+Exercício 06
+
+Usando o comando anterior, modique o argumento _mgp_, deixe o primeiro valor em 3 e modifique os dois seguintes para 2 e 1. Que muda nas etiquetas e no eixo? Experimente outros valores.
+
+---
+
+```{r}
+par(tcl = 0.5, # valor padrão, controla o tamanho das marcas e a direção, valor negativo = marca fora
+    mgp = c(3,2,1)) 
+
+plot(x,y) 
+```
+
+---
+
+FIM DA SEGUNDA PARTE
+
+---
+

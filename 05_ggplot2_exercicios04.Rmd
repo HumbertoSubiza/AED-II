@@ -1,0 +1,436 @@
+---
+title: "Oficina AED - Parte II"
+author: "WHSP"
+date: "21 de junho de 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE, }
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+---
+
+## Curso de Análise Exploratório de Dados com R - Parte II
+## Visualização de dados com _ggplot2()_
+
+---
+
+### Modificações dos parâmetros estéticos
+
+#### Exercícios 04
+
+---
+
+Alguns parâmetros estéticos permitem ser modificados para uma melhor representação.
+
+Referente à posição dos elementos gráficos, o padrão de posicionamento é "identity", ou seja os elementos serão colocados na sua correta posição, mapeada pelas variáveis respectivas.
+
+Porém, já vimos o efeito "jitter" na posição, quando queremos visualizar elementos sobrepostos parcial ou totalmente. 
+
+A separação no caso dos pontos pode ser especificamente determinada através da função **position_jitter**, veja o seguinte exemplo:
+
+---
+
+```{r}
+posn.j <- position_jitter(width = 0.2)
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
+  geom_point(position = posn.j)
+```
+
+
+Em relação à posição, com gráficos de barras já vimos que podemos colocarlas lado a lado ou empilhadas, ou seja "dodge" ou "stack", ou ainda mudar a posição dos eixos com "coord_flip()".
+
+---
+
+#### Escalas
+
+Existem diversas funções de escala, vamos mostrar duas interessantes e muito usadas, elas são a que determina a apariência das escalas em ambos eixos, "x" e "y" e a que controla a escala de cores, colocando nomes nas cores escolhidas de forma de refletir os fatores usados. 
+
+Veja o exemplo:
+
+
+```{r, warning=FALSE}
+# as primeiras duas camadas são as básicas de plotagem, com dados e geometria
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
+    geom_point(position = "jitter")                                 +
+
+# esta camada controla a apariência do eixo "x", se estabelece o nome do eixo,  os limites, assim como o intervalo em que serão colocadas as etiquetas (breaks)
+      scale_x_continuous("Comprimento da Sépala", 
+                         limits = c(4, 8),
+                         breaks = seq(4, 8, 1))                     +
+
+# esta camada controla o eixo "y", nome, limites e intervalos      
+      scale_y_continuous("Largura da Sépala", 
+                         limits = c(2, 5),
+                         breaks = seq(2, 5, 0.5))                   +
+
+  # esta camada controla a apariência da escala de cores, de tipo discreta. Coloca nome na legenda e nas categorias       
+      scale_color_discrete("Especies",labels = c("Setosa", "Versicolor", "Virginica"))
+
+```
+
+As escalas usadas foram para escala de variáveis contínuas nos eixos e discreta na cor, consulte a ajuda para escalas de variáveis discretas e cor contínua.
+
+---
+
+Nos exercícios a seguir, toda instrução que tenha a 
+
+#### **_<span style="color:blue">seguinte formatação</span>_**
+
+é para sua execução no fragmento de código R que segue ou na consola do RStudio (janela 3).
+
+---
+
+#### **_<span style="color:blue">Com a base de dados mtcars, faça um gráfico das variáveis "disp" e "mpg", use a variável "cyl" para separar por fatores e dê cor em cada um. Adicione título e legendas nos eixos. As escalas dos eixos devem ser: 0-500 e 0-40 respectivamente, escolha o intervalo que crea adequado, </span>_**
+
+---
+
+```{r}
+# Solução:
+# primeira camada, dados e mapeamento de variáveis, cor pelo cilindro
+
+
+# segunda camada, pontos
+
+
+# terceira camada, título
+
+
+# quarta camada, escala no eixo "x", contínua, define os limites e os intervalos
+
+
+
+# quinta camada, escala no eixo "y", contínua, define os limites e os intervalos
+
+
+# sexta camada, escala de cor discreta com nome
+
+  
+```
+
+---
+
+Os parâmetros estéticos podem ser colocados de duas forma: 
+
+  - inicialmente na primeira camada, junto à definição dos dados e o mapeamento de variáveis, ou
+  
+  - em cada camada individualmente.
+
+No primeiro caso, os parâmetros são definidos como globais e vão determinar o aspecto de toda camada que não tenha definido esses parâmetros na sua definição, ou seja **elas vão herdar os atributos globais**.
+
+
+No segundo caso, **cada parâmetro definido na camada vai ter prioridade** sobre os valores que estejam definidos como globais.
+
+Exemplo
+
+---
+
+```{r}
+# primeiro gráfico, a cor está definida globalmente acorde factor(cyl)
+ggplot(mtcars, aes(x=disp, y = mpg, col = factor(cyl)))             +
+  geom_point() 
+
+# segundo gráfico, a cor está definida na camada da geometria e tem prioridade...
+ggplot(mtcars, aes(x=disp, y = mpg, col = factor(cyl)))             +
+  geom_point(aes(col = "red")) 
+```
+
+---
+
+Cada geometria pode ter seus parâmetros estéticos próprios, independiente das definições globais, e cada geometria tem seus parâmetros específicos. 
+
+No caso da geometria de pontos, o esencial é "x" e "y", que pode estar definido globalmente, mas tem as opções de: **alpha, colour, fill, shape e size**.
+
+**Assim sendo temos a possibilidade controlar o aspecto de cada camada independentemente das outras.**
+
+Vejamos o seguinte exemplo. Nele vamos graficar os pontos e as médias das três especies da flor "iris".
+
+Para isso vamos calcular primeiro a média por espécie e guardar numa variável **"iris.resumo"**. Para isso veja a função ?aggregate, que divide um dataframe em subconjuntos e para cada um deles, aplica uma função. 
+
+No nosso caso, vamos usar o dataframe "iris", columnas 1 a 4, agrupadas pela coluna 5, "Species" e para cada grupo calculamos a média:
+
+
+```{r}
+iris.resumo <- aggregate(iris[1:4], by = list(iris$Species), mean)
+
+# para evitar conflitos de nomes na determinação das cores, colocamos o nome
+names(iris.resumo)[1] <- "Species"
+
+iris.resumo
+```
+
+---
+
+Na sequência vamos graficar os pontos, evitando a sobreposição e colorindo por espécie e adicionar depois uma terceira camada com as médias de cada espécie, com simbolo e tamanho diferente, mas cor idêntica e transparência de 0.6.
+
+A quarta camada vai dar o nome na legenda, como já feito em exemplos anteriores.
+
+---
+
+```{r}
+# primeira camada com a definição dos dados e cor
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species))       +
+
+#segunda camada, apenas pontos, estética determinada globalmente
+  geom_jitter()                                                           +
+
+# terceira camada, definimos os dados, tamanho e etiqueta
+     geom_point(data = iris.resumo, shape = 18, size = 6, alpha = 0.6)    +
+
+# quarta camada com o nome da legenda
+            scale_color_discrete("Espécies")
+```
+
+---
+
+Na escolha das formas, temos 25 diferentes, sendo as últimas 5 com preenchimento de cor e borda diferenciado, veja
+?aes_linetype_size_shape.
+
+---
+
+```{r}
+# gráfico das 25 formas diferentes
+df2 <- data.frame(x = 1:5 , y = 1:25, z = 1:25)
+s <- ggplot(df2, aes(x, y))
+
+# primeiro grafico todos com cor preto e tamanho 4
+s + geom_point(aes(shape = z), size = 4) +
+  scale_shape_identity() +
+    theme_minimal()
+
+# simbolos 20-25 tem também borda e preenchimento de cor
+s + geom_point(aes(shape = z), size = 4, colour = "Red", fill = "Blue") +
+  scale_shape_identity() +
+    theme_minimal()
+
+```
+
+---
+
+#### **_<span style="color:blue">Com a base de dados "mtcars"", calcule primeiro as médias dos valores de "mpg" e "qsec", depois faça um gráfico das variáveis "mpg" e "qsec", usando a variável "gear" e dê cor em cada um.</span>_** 
+
+#### **_<span style="color:blue">Adicione uma camada com as médias calculadas, com forma 24, de borda vermelha e preenchimento preto, use alpha =0.5. Adicione título e tema a sua escolha. </span>_**
+
+---
+
+```{r}
+# Solução:
+# cálculo das médias
+
+
+# para evitar conflitos de nomes na determinação das cores, colocamos o nome "gear"
+
+
+# olhe o resumo
+
+
+# gráfico
+# primeira camada com a definição dos dados e cor
+
+
+#segunda camada, apenas pontos com separação jitter, estética determinada globalmente
+
+
+# terceira camada, definimos os dados, tamanho e etiqueta
+
+
+
+# quarta camada com o nome da legenda
+
+  
+# titulos
+
+
+```
+
+
+---
+
+### Gráficos de séries temporais
+
+Existem pacotes específicos para tratar e visualizar séries temporais. O próprio lines() do R base pode ser usado, assim como o pacote **stats** permite transformar dados em série temporal (**ts**) e graficar em forma fácil (**ts.plt**). O uso de **plot()** + **lines()** também é possível, com o cuidado de ver a variação de escala quando adicionamos mais de uma linha.
+
+Vamos mostrar um exemplo de gráfico temporal. Criamos o dataframe ou importamos os dados e logo fazemos um gráfico temporal. Neste caso específico a variável que representa os dados não está definida como tipo "data", mas como fator, isso porque os dados contém apenas valores de médias sem especificar outro tipo de data. 
+
+Atentar como se cria uma determinada ordem para graficar depois os dados, usando "levels  = ...".
+
+---
+
+```{r}
+# crio um vetor com o nome dos meses
+nome.meses <- c("Jan", "Fev", "Mar", "Abril","Mai", "Jun", "Jul", "Ago", "Set", "out", "Nov", "Dez")
+
+# crio o dataframe, com os meses, as cidades e as temperaturas
+media.temp <- data.frame(meses = factor((nome.meses), levels = nome.meses),
+                         cidades = rep(c("Porto Alegre,RS", "Rio de Janeiro,RJ", "Teresina,PI"), each = 12),
+                         temp = c(24.8,	24.0,	21.8,	18.6,	15.8,	14.7,	14.9,	16.3,	18.2,	20.5,	22.7, 21.6,
+                                  26.1,	26.0,	25.2,	23.6,	21.8,	20.9,	20.6,	21.0,	21.7,	22.5,	23.8,	24.6,
+                                  26.8,	26.5,	27.0,	26.9,	26.8,	26.8,	26.9,	28.2,	29.2,	29.3,	29.0,	28.0))
+head(media.temp)
+
+# gráfico do dataframe, primeiro os dados e mapeamento de variáveis
+ggplot(media.temp, aes(x = meses, y = temp, group = cidades, color = cidades)) +
+# adiciona pontos
+    geom_point(size = 1.3)                                                       + 
+# adiciona linha entre pontos
+      geom_line(size = 1)                                                        +
+# adiciona titulos e tema
+        labs(title    = "Temperatura média anual em 3 capitais de estados",
+             subtitle = "Fonte: www.pt.climate-data.org - Jul2017",
+             caption  =  "Oficina AED - II")           +
+          theme_minimal()
+
+```
+
+
+---
+
+#### **_<span style="color:blue">Adicione no fragmento de código anterior uma linha suavizada sem intervalo de confiança. Especifique o tipo da linha diferente da linha anterior (linetype). Experimente colocar o intervalo de confiança e diferentes temas. Mude o título para refletir a mudança do gráfico.</span>_** 
+
+---
+
+```{r}
+# Solução:
+# gráfico do dataframe, primeiro os dados e mapeamento de variáveis
+
+
+# adiciona pontos
+
+
+# adiciona linha entre pontos, tamanha 1 e tipo 4
+                                                   
+
+# adiciona linha suave sem intervalo de confiança
+
+
+# adiciona titulos e tema
+
+```
+---
+
+As séries temporais podem vir em dois tipos diferentes, como dado tabular, geralmente importado como dataframe, ou como objeto R **"Time-Series"**.
+
+como dataframe, uma variável deve indicar o tempo de cada registro, seu formato pode ser de apenas ano, ano-mes-dia ou combinações incluindo horas, mas o importante e que primeiro devemos definir a variável que representa as datas como de tipo "Date". Isso pode ser feito com diversos pacotes, incluindo "as.Date" ou "lubridate::as_Date" (veja a documentação da AED - I).
+
+Feito ou verificado isso, **ggplot2** reconhece a variável como data e trata como tal.
+
+---
+
+```{r}
+# grafico de série temporal
+head(economics)
+
+# uma e duas variáveis 
+ggplot(economics, aes(date, psavert))          + 
+  geom_line(aes(col = "blue"))                 +
+    geom_line(aes(date, uempmed, col = "red")) +
+  # quarta camada com o nome da legenda
+      scale_color_discrete("Séries", 
+                           labels = c("uempmed", "psavert"))
+
+# diversas variáveis, note a compatibilização das variáveis para ter o eixo comumy entre 0 e 1
+ggplot(economics_long, aes(date, value01, colour = variable)) +
+  geom_line() +
+    theme_minimal()
+
+
+```
+
+---
+
+No caso de objetos R do tipo **"Time-Series"**, para ser visualizada corretamente com ggplot2, ela deve ser convertida em dataframe. Temos diversas maneiras de fazer a operação:
+
+  1- forçando a variável com **"as.data.frame.ts()"**;
+  
+  2- usando o pacote **ggfortity**; ou
+  
+  3- usando o novo pacote **broom::ts**. 
+
+Feita a transformação, a função **autoplot** do própio ggplot faz a visualização
+
+---
+
+```{r, warning= F}
+# usando ggfortify
+library(ggfortify)
+autoplot(sunspot.year, ts.colour = 'red', ts.linetype = 'dashed') +
+  labs(title = " Manchas solares anuais desde 1700")              +
+    scale_x_continuous("Anos", 
+                         limits = c(1700, 2000),
+                         breaks = seq(1700, 2000, 25))            +
+    theme_bw()
+```
+
+---
+
+
+#### **_<span style="color:blue">No seguinte fragmento do código, personaliza os eixos "x" e "y", dando nome, limites e intervalos a sua escolha</span>_** 
+
+---
+
+```{r}
+# usando broom
+library(broom)
+autoplot(sunspot.year, ts.colour = 'red', ts.linetype = 'dashed') +
+  labs(title = " Manchas solares anuais desde 1700")              +
+
+# esta camada controla o eixo "x", nome, limites e intervalos
+
+  
+# esta camada controla o eixo "y", nome, limites e intervalos
+
+  
+      theme_bw() 
+```
+
+---
+
+Autoplot sirve também para graficar diversas séries temporais de uma mesma época, através da função **facets = ...**
+
+---
+
+```{r}
+library(ggfortify)
+# a série que tem formato de dataframe é transformada em objeto R "Time-Series"
+
+# gráfico separado por variável
+eco <- ts(economics)
+
+# facets
+autoplot(eco[,2:5], facets = T)
+
+# eixo unificado
+autoplot(eco[,2:5], facets = F)
+```
+
+---
+
+####DICA 
+
+No gráfico da série temporal para diversas variáveis, a amplitude apresenta uma grande variação, fazendo que um gráfico com elas num eixo único, fique confuso, como ocorre nesse último gráfico com facets. 
+
+Para colocar todas as variáveis desejadas num intervalo pre-determinado, usamos uma fórmula aplicada em forma individual para cada uma delas.
+
+
+ Fórmula de re-escala em intervalos definidos: $\ max_{novo} , mín_{novo}$, a fórmula seria:
+
+
+$$n_{novo} = \frac {max_{novo} - mín_{novo}}{max_{velho}-mín_{velho}} X (n_{velho} - max_{velho}) + max_{novo}$$ 
+
+O procedimento seria criar uma função baseada na fórmula apresentada e aplicar a mesma na(s) coluna(s) desejadas, através da função **apply** ou alguma das sus variações.
+
+No caso específico de _normalizar_ uma variável, ou seja, deixar sua média com valor 0 e seu desvio padrão em 1, dispomos da função _scale_, que realize o cálculo diretamente.
+
+---
+
+FIM DE EXERCICÍOS 4
+
+---
+
+```{r}
+sessionInfo()
+
+```

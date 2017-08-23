@@ -1,0 +1,299 @@
+---
+title: 
+author:
+date: 
+output:
+#  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+old.par <- par(no.readonly = TRUE)
+```
+
+## Capítulo 2 - Gráficos com plot() 01
+
+## a - _plot()_ ando gráficos
+
+A criaçao de gráficos é uma arte e um processo totalmente iterativo enquanto encontramos, modificando diversos argumentos, a aparência final do nosso gráfico. 
+
+Ainda que apenas para conhecer ou explorar os dados, a interação com o gráfico nos permite ter diferentes visões dos dados e começar a decidir sobre o tipo e apariencia do(s) gráfico(s) final(is). 
+
+---
+
+Nos exercícios a seguir, toda instrução que tenha a 
+
+#### **_<span style="color:blue">seguinte formatação</span>_**
+
+é para sua execução no fragmento de código R que segue ou na consola do RStudio (janela 3).
+
+---
+
+Para ver algumas das possibilidades da função **plot()** execute na consola o seguinte comando:
+
+**demo("graphics")**
+
+---
+
+#### Criação rápida de gráficos
+
+A função _plot()_ do R base, permite elaborar em forma rápida e simples, diversos gráficos que facilitam a análise exploratória de dados. Esses gráficos não são complexos ou aprimorados como para apresentações ou publicações, mas são extremamente úteis para definir análises iniciais e ainda definir o tipo de gráfico mais adequado para a elaboração de resultados finais.
+
+A função é genérica e,  acorde os dados de entrada, podemos ter diferentes tipos de gráficos. 
+
+A forma mais básica é _plot(x, y, ...)_. Sendo _"..."_ argumentos adicionais que podem ser passados. 
+
+O argumento _y_ também é opcional e dependo do tipo dos seus dados ele será obrigatório. Por exemplo quando desejamos fazer um diagrama de dispersão de uma variável, ele não é necessário. Vejamos o seguinte exemplo, usando o conjunto de dados "cars":
+
+---
+
+```{r}
+head(cars)
+plot(cars$dist)
+```
+
+---
+
+Quando desejamos um gráfico de duas variáveis (uma explicatória ou independente no eixo x e uma explicada ou resposta no eixo y), basta fazer:
+
+---
+
+```{r}
+plot(cars$speed, cars$dist)
+```
+
+---
+
+Note em ambos casos que _plot()_ escolheu automaticamente diversos atributos do gráfico para a plotagem.
+
+Temos duas maneiras de especificar nossos dados ou variáveis: através da forma cartesiana, **x, y**, como nos exemplos anteriores ou na forma de fórmula **y ~ x**. 
+
+Note a ordem das variáveis em cada uma e o uso do **~**.
+
+Veja o seguinte exemplo com os dados do conjunto de dados **iris**, o qual veremos a sua estrutura primeiro:
+
+---
+
+```{r iris}
+str(iris)
+par(mfrow = c(2,2), pty = "s")
+plot(iris$Sepal.Length, iris$Sepal.Width, main = " X , Y")
+plot(iris$Sepal.Width ~ iris$Sepal.Length, main = " X ~ Y")
+hist(iris$Sepal.Width)
+rug(iris$Sepal.Width)
+boxplot(iris$Sepal.Length, iris$Sepal.Width)
+rug(iris$Sepal.Length, side = 4, col = "red") # função que plota as observações no eixo (padrão=1)
+rug(iris$Sepal.Width, side = 4)
+```
+
+---
+
+No painel anterior o parâmetro **par** determina como vamos configurar o espaço gráfico. O argumento _mfrow = c(2,2)_, indica que vamos ter 4 gráficos, organizados numa matriz de 2 linhas por duas colunas. O preenchimento dos espaços pelos gráficos, por padrão, é por linha. A inclusão do argumento _pty = "s"_, faz que os gráficos mantenham um aspecto similar para ambos eixos (gráfico quadrado). 
+
+Também observa-se que a própria função _plot()_ escolhe em forma automática os atributos de exibição dos gráficos, como limites dos eixos x e y, nomes das variáveis, forma, tamanho e cores dos pontos, nos casos de cima, cores divisão de intervalos no caso do histograma e posição e cores no caso dos boxplot.
+
+Os títulos nos dois primeiros gráficos foram definidos através do argumento _main_.
+
+Os argumentos adicionais que podem ser passados na função _plot()_ são:
+
+1- _type_, determina o tipo de gráfico que queremos, por padrão será usado "p" de pontos, mas temos:
+
+ - "l" para linhas;
+ - "b" para pontos e linhas;
+ - "c" para as linhas apenas da opção "b";
+ - "o" para sobreposição de ambos;
+ - "h" para gráfico tipo ‘histograma’(linhasverticais);
+ - "s" degraus,
+ - "S" outros tipos de degraus
+ - "n" não plotar
+
+2- _main_, título principal;
+
+3- _sub_, subtítulo, debaixo do principal. Se aconselha para colocar a fonte dos nossos dados;
+
+4- _xlab_, título do eixo x;
+
+5- _ylab_, título do eixo y;
+
+6- _xlim_, vetor que indica os limites mínimo e máximo do eixo x;
+
+7- _ylim_, vetor que indica os limites mínimo e máximo do eixo y; 
+
+8- _pch_, determina o tipo de símbolo a ser usado, veja ?pch
+
+9, _col_, especifica qual cor a ser usada na simbologia (em inglês), exemplo _col = "blue"_ 
+
+---
+
+**DICA**
+
+Para a realização dos exercícios, vai encontrar no seu diretório de trabalho um  script R, "graficos01_exerc.R", copie os exercícios a realizar e sua própria solução. No futuro podem ser uma referência, junto com o material da oficina para resolver em forma rápida problemas de visualização de dados.
+
+---
+
+#### **_<span style="color:blue">Exercício 01</span>_**
+
+Usando o comando já mostrado de:
+
+_plot(cars\$speed, cars\$dist)_
+
+1- adicionar um título principal, um subtítulo (sugestão: "Fonte: R datasets::cars"), legendas em ambos eixos e redefina os limites de cada um.
+
+2- mude o tipo de símbolo para triângulo cheio e de cor vermelha
+
+---
+
+#### **_<span style="color:blue">Exercício 02a</span>_**
+
+Considerando o comando _hist_ no segundo exemplo apresentado, fazer o histograma da variável _Sepal.Lenght_ dos dados _iris_.
+
+Redefina os limites dos eixos, coloque título principal, subtítulo e nos nomes nos eixos e defina uma cor verde para o histograma.
+
+---
+
+A função _hist_ escolhe automáticamente o número de intervalos ótimo, em função do tamanho da amostra e a dispersão dos dados, porém nem sempre é a melhor escolha visual. Através do argumento _breaks_ e o número de intervalos desejado podemos mudar nosso histograma.
+
+
+#### **_<span style="color:blue">Exercício 02b</span>_**
+
+Com o comando do exercício anterior, experimente usar o argumento _breaks_ com 5,10,20 e 50 intervalos. Que acontece com o eixo de Frequências? e com 50 intervalos, o que acontece com o histograma?
+
+---
+
+Gráficos de probabilidade amostral e histogramas
+
+Ainda que não tão conhecidos como os histogramas, as probabilidades calculadas podem ser graficadas como um histograma "suavizado", o que fornece uma melhor estimativa da função de probabilidade para uma variável aleatória.
+
+A função _hist_ com o argumento _"probability =T"_, calcula a função de probabilidade amostral e fornece os valores de densidade no eixo "y". Adicionando uma linha de densidade sobre o histograma, a linha pode ser vista com um histograma "suavizado". 
+
+Para isto, após o gráfico do histograma, adicionar uma linha com a função lines e a densidade calculada. No seguinte exemplo adicionamos uma linha em vermelho de largura = 2 e retiramos os limites do eixo "y". A função _lines()_ é uma função adicional que se coloca fora da função _plot()_.
+
+Note o uso de “\n” no título principal para quebrar a legenda em dois parâgrafos.
+
+---
+
+
+```{r}
+hist(iris$Sepal.Width,
+     probability = T,
+     breaks = 10,
+     xlim = c(1,5),
+     main = "Histograma de largura de sépala \n com histograma suavizado",
+     sub  = "Fonte: R datasets::iris",
+     xlab = "Largura em cm",
+     ylab = "Densidade",
+     col  = "green")
+lines(density(iris$Sepal.Width), lwd=2, col= "red")
+
+rug(iris$Sepal.Width, lwd = 1, col ="red")
+```
+
+
+
+---
+
+Um outro tipo de gráfico muito usado é o de **barra**. Ele serve para mostrar as quantidades de observações contidas nos diferentes níveis de uma variável categórica. Por exemplo, nos dados _iris_ a função _table(iris$Species)_ (execute na consola de comandos), nos informa que as três espécies da planta tem 50 observações cada. função _plot()_ pode fazer um gráfico de barras, mas visualmente não é atrativo.
+
+---
+
+#### **_<span style="color:blue">Exercício 03</span>_**
+
+Na linha de comando experimente:
+
+plot(table(iris$Species))
+
+---
+
+A função específica _barplot()_ elabora a partir de uma tabela prévia, o gráfico de barras correspondente. Vejamos agora a mesma tabela com a função _barplot_:
+
+---
+
+```{r}
+barplot(table(iris$Species))
+
+```
+
+
+---
+
+#### **_<span style="color:blue">Exercício 04</span>_**
+
+Com os conhecimentos de argumentos já conhecidos: coloque título principal, subtítulo, nome no eixo "y" e dê uma cor diferente para cada barra (dica: o argumento _col_ aceita um vetor com os nomes das cores (inglês), tipo _c("cor1", "cor2",...)_).
+
+---
+
+Finalmente algumas considerações acerca do tipo de gráfico de torta ou _pie chart_. Ele pode ser usado quando as categorias a serem mostradas são em número pequeno e não muito diferentes nas suas quantidades ou valores. Para ter categorias em número diferentes, vamos usar a base de dados _mtcars_ e fazer uma tabela de carros por tipo de quantidade de marchas (3, 4 ou 5). Logo após vamos apresentar a tabela e o gráfico com _barpot()_ e com _pie_ lado a lado _(mfrow)_.
+
+---
+
+```{r}
+tab <- table (mtcars$gear)
+tab
+# Configurando o espaço gráfico para dois gráficos na mesma linha
+par(mfrow = c(1,2))
+
+barplot(tab, main="Gráfico de barras")
+pie(tab, main="Gráfico de torta")
+```
+
+---
+
+No exemplo apresentado, a informação tem diferentes características. 
+
+No primeiro gráfico, pode-se estimar pelo eixo _y_ a quantidade de dados em cada categoria, assim como temos a impressão do tamanho relativo de cada uma.
+
+No segundo gráfico, temos uma visão mais clara do tamanho relativo, mas não temos as quantidades expressas.
+
+Ambas dificuldades podem ser contornadas com a inclusão de argumentos adicionais em cada função. Porém o gráfico de torta fica comprometido no caso de maior número de variáveis e grande diferença de elementos entre as categorias. 
+
+No exemplo seguinte, vamos usar uma base de dados de seguros de carros e criar uma tabela por tipo de carro. Na sequência vamos plotar dois gráficos lado a lado com o gráfico de barras com _barplot()_ e com _pie_, lado a lado.
+
+---
+
+```{r}
+# Carrega o pacote insuranceData
+library(insuranceData)
+
+# Uso a função "data" para carregar a base "dataCar" do pacote "insuranceData"
+data("dataCar")
+
+# Configurando o espaço gráfico para dois gráficos na mesma linha
+par(mfrow = c(1,2))
+
+# Criar a tabela de tipo de carro e ordenar em ordem decrescente
+tab <- sort(table(dataCar$veh_body),
+            decreasing = T)
+
+# Gráfico de barras  com nomes reduzidos pela metade cex.names = 0.5
+# o argumento las = 2, coloca os nomes na vertical para melhorar o espaço
+barplot(tab, las = 2, cex.names = 0.5)
+
+# Adiciono um título, usando a função "title"
+title("Gráfico de barras tipos de carros")
+
+# criar o gráfico de torta
+pie(tab, cex = 0.5)
+title("Gráfico de torta tipos de carros")
+```
+
+---
+
+A pesar da diferença grande de dados em cada variável, vemos que no caso do gráfico de barras, ainda temos uma visão clara do tamanho relativo, assim como das quantidades envolvidas. No caso do gráfico de torta, a leitura torna-se impossível para as menores quantidades, superpondo as últimas.
+
+A escolha da melhor apresentação é uma tarefa subjetiva, porém em toda a literatura de visualização de dados, não se recomenda usar o gráfico de torta e se ainda assim é usado, **nunca colocar ele em forma 3D!**
+
+---
+
+FIM DA PRIMEIRA PARTE
+
+---
+
+```{r}
+sessionInfo()
+
+save(list = ls(), file = "Oficina_AED_graf01.Rdata") 
+
+
+
+
