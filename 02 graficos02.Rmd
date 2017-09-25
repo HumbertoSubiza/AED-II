@@ -28,7 +28,7 @@ Quando trabalhamos com diversos gráficos, com frequência modificamos o ambient
 Por isso é de boa prática guardar as variáveis com seus valores padrão antes de qualquer modificação, para poder retornar (ou limpar) ao ambiente original. Uma das formas pode ser colocar os valores padrão numa variável que pode ser chamada antes de um novo gráfico ser construído, por exemplo:
 
 
-```{r}
+```{r salva_par}
 pro<- par(no.readonly=TRUE) 
 ```
 
@@ -38,13 +38,11 @@ Por outro lado as variáveis modificadas diretamente nas funções gráficas sã
 
 Vamos ver como personalizar os eixos em alguns casos práticos.
 
-Primeiro uma plotagem simples com todos os elementos vistos até aqui, intencionalmente fixamos o limites dos eixos com valores maiores dos necessários.
-
-Simulamos dados, 300 valores consecutivos e aleatorios entre -5 e +5...veja _?runif_
+Vejamos como personalizar os eixos em alguns casos práticos. Primeiro, uma plotagem simples com todos os elementos vistos até aqui. Intencionalmente foram fixados os limites dos eixos com os valores maiores que os necessários. Simulamos dados, 300 valores consecutivos e aleatórios entre -5 e +5.veja _?runif_
 
 ---
 
-```{r} 
+```{r plot01, fig.align='center'} 
 set.seed(12345) # semente serve para reprodução de valores iguais em dados aleatórios (ou  seudo...)
 
 x<-1:300
@@ -73,16 +71,14 @@ plot(x, y,
 
 ---
 
-Uma função muito útil para ter mais controle dos eixos é  _axis_. Para poder fazer uso da função, primeiro tem de desabilitar o eixo desejado na função _plot()_. Isso é feito incluíndo o parâmetro **xaxt="n"** e ou **yaxt="n"**.
+Uma função muito útil para ter mais controle dos eixos é  _axis_. Para fazer uso da função, primeiro é necessário desabilitar o eixo desejado na função _plot()_. Isso é feito incluíndo o parâmetro **xaxt="n"** e ou **yaxt="n"**.
 
- _axis()_ permite controlar os valores das marcas, tipo de linha, tamanho, espaçamento das linhas, cor, etc. 
+ A função _axis()_ permite controlar os valores das marcas, tipo de linha, tamanho, espaçamento das linhas, cor, etc. 
 
-Vejamos:
-
-Uso da função axis: vamos suprimir os eixos "x" e "y"
+Vejamos o uso da função axis. No exemplo abaixo suprimiremos os eixos "x" e "y".
 
 
-```{r} 
+```{r plot02, fig.align='center'} 
 par(pro) # voltamos aos valores padrão..
 plot(x,y,
      xaxt = "n",   # o valor xaxt="n", impede de plotar o eixo x
@@ -91,13 +87,13 @@ plot(x,y,
 
 ---
 
-Vamos adicionar o eixo x, para isso usamos a função _axis_ (veja todas as opções com **?axis**), especificando o lado em que vamos adicionar (1, 2, 3 ou 4, contados em sentido horário a partir da borda inferior).
+Para adicionar o eixo x, usaremos a função _axis_ (veja todas as opções com **?axis**), especificando o lado no qual adicionaremos (1, 2, 3 ou 4, contados em sentido horário a partir da borda inferior).
 
 No eixo adicionado, vamos colocar uma sequência de valores de 0 a 300, com marcas cada 25. Para isso usamos a função _seq_ como argumento dentro de _axis_.
 
 ---
 
-```{r} 
+```{r plot03,  fig.align='center'} 
 
 plot(x,y,
      xaxt="n") # o valor xaxt="n", impede de plotar o eixo x
@@ -109,11 +105,11 @@ axis(side= 1,
 
 ---
 
-Podemos colocar etiquetas texto em determinados valores. No seguinte exemplo, colocaremos três etiquetas nos valores -4, 0 e 4 do eixo "y" (número 2).
+É possível colocar etiquetas texto em determinados valores. No seguinte exemplo, colocaremos três etiquetas nos valores -4, 0 e 4 do eixo "y" (número 2).
 
 ---
 
-```{r}
+```{r plot04, fig.align='center'}
 plot(x,y,
      xaxt="n",
      yaxt="n")
@@ -132,12 +128,11 @@ Um argumento que ajuda a controlar a posição relativa dos textos e etiquetas �
 
 ---
 
-
-A função _axis()_, também controla o tipo de linha e espessura das marcas. Ao gráfico anterior vamos adicionar uma marca preta entre os valores (5,25 e 75) e outra nos valores (150, 225 e 275), finalmente serão colocadas duas linhas verticais para demarcar o espaço entre os valores (150 e 275).
+A função _axis()_, também controla o tipo de linha e espessura das marcas. Ao gráfico anterior vamos adicionar uma marca preta entre os valores (5, 25 e 75) e outra nos valores (150, 225 e 275), finalmente serão colocadas duas linhas verticais para demarcar o espaço entre os valores (150 e 275).
 
 ---
 
-```{r}
+```{r plot05, fig.align='center'}
 plot(x,y,
      xaxt="n",
      yaxt="n")
@@ -168,11 +163,11 @@ abline(v=275, lwd =2)   # linha vertical no valor de 150, espessura 2
 
 ---
 
-Ou se desejar pode tirar toda a borda da plotagem e mostrar apenas os eixos.
+Caso deseje, é possível tirar toda a borda da plotagem e mostrar apenas os eixos.
 
 ---
 
-```{r}
+```{r plot06, fig.align='center'}
 plot(x,y,
      bty ="n",  # suprimir a caixa do gráfico (borda exterior)
      xaxt="n",  # suprimir eixo x
@@ -186,16 +181,15 @@ axis(side = 4,
      lwd  = 3)
 ```
 
-
 ---
  
-Marcas nos eixos, ou etiquetas
+#### Marcas nos eixos, ou etiquetas
  
-Se tem um controle mais fino através de _par()_ ou _axis()_:
+Consegue-se um controle mais fino através de _par()_ ou _axis()_:
 
 o argumento _tcl_ controla como as marcas serão posicionadas:
 
-    - valores positivos fazem as marcas estar dentro do gráfico
+    - valores positivos fazem as marcas ficarem dentro do gráfico;
 
     - valores negativos fazem as marcas estar fora da área do grafico
 
@@ -209,13 +203,13 @@ o argumento _mgp_ dentro de _par()_ toma três valores:
   
               - o terceiro entre o gráfico e a linha do eixo,
               
-              - o padrão é mgp=c(3,1,0)
+              - o padrão é mgp = c(3, 1, 0)
 
- Vejamos no seguinte exemplo usando _mgp_ e _tcl_ com os valores padrão para o desenho.
+ Vejamos o seguinte exemplo usando _mgp_ e _tcl_ com os valores padrão para o desenho.
  
 ---
  
-```{r}  
+```{r plot07, fig.align='center'}  
 
 par(tcl = -0.5, # valor padrão, controla o tamanho das marcas e a direção, valor negativo = marca fora
     mgp = c(3,1,0)) #padrão
@@ -225,13 +219,27 @@ plot(x,y)
 
 #### **_<span style="color:blue">Exercício 05</span>_**
 
-Usando o comando anterior, modique o argumento _tcl_ para 0.5 e experimente modificar apenas o primeiro valor de _mgp_ para 1. Que acontece com o nome dos eixos? Experimente outros valores.
+Usando o comando anterior, modique o argumento _tcl_ para 0.5 e experimente modificar apenas o primeiro valor de _mgp_ para 1. O que acontece com o nome dos eixos? Experimente outros valores.
+
+---
+
+```{r plot08, fig.align='center'}
+# sua solução
+
+```
 
 ---
 
 #### **_<span style="color:blue">Exercício 06</span>_**
 
-Usando o comando anterior, modique o argumento _mgp_, deixe o primeiro valor em 3 e modifique os dois seguintes para 2 e 1. Que muda nas etiquetas? Experimente outros valores.
+Usando o comando anterior, modique o argumento _mgp_, deixe o primeiro valor em 3 e modifique os dois seguintes para 2 e 1. O que muda nas etiquetas? Experimente outros valores.
+
+---
+
+```{r plot09, fig.align='center'}
+# sua solução
+
+```
 
 ---
 
@@ -239,7 +247,7 @@ Um outro exemplo usando _axis()_ e _mtext()_. A última é uma função útil pa
 
 ---
 
-```{r} 
+```{r plot10, fig.align='center'} 
 par(pro)
 plot(x,y,
      bty  ="n",  # suprimir a caixa do gráfico (borda exterior)
@@ -274,10 +282,10 @@ mtext(side=2,
 
 ---
 
- Vejamos o caso quando temos uma área de plotagem com vários gráficos e eixos semelhantes. No uso do _mtext_, notar o argumento **outer** que determina que o texto será colocado na área exterior ao gráfico 
+ Vejamos o caso no qual há uma área de plotagem com vários gráficos e eixos semelhantes. No uso do _mtext_, note o argumento **outer** que determina que o texto será colocado na área exterior ao gráfico 
  
 
-```{r} 
+```{r plot11, fig.align='center'} 
 par(pro)
 par(oma  = c(3,3,3,0),  # parâmetro que estabelece a margem exterior da janela comum
     mar  = c(2,2,2,1),  # parâmetro que estabelece a margem exterior de cada gráfico(em linhas)
@@ -307,7 +315,7 @@ mtext(text ="Vários gráficos numa janela só",
 
 ---
 
-Plotar e ou sobrepor linhas e pontos 
+#### Plotar e ou sobrepor linhas e pontos 
 
 Com a função _lines()_ podemos adicionar uma linha ao gráfico. A linha é produzida a partir da união de um conjunto de pontos em forma sequêncial. 
 
@@ -317,7 +325,7 @@ No seguinte exemplo vamos usar os dados da base datasets::**cars** para produzir
 
 ---
 
-```{r}
+```{r plot12, fig.align='center'}
 cars <- datasets::cars                 # salvamos os dados
 linha.reg <- lm(cars$dist ~ cars$speed)# calculamos uma regressão linear simples
 linha.pol <- stats::lowess(cars)
@@ -342,15 +350,15 @@ lines(linha.pol,  # plotar a lina
 
 ---
 
-Adicionando uma camada de pontos
+#### Adicionando uma camada de pontos
 
-A função _points_ realiza uma função parecida com as anteriores mostradas. Uma vez realizado um gráfico podemos adicionar camadas personalizadas de pontos.
+A função points desempenha um papel similar aos das funções exibidas anteriormente. Uma vez criado um gráfico, podemos adicionar camadas personalizadas de pontos.
 
-No exemplo seguinte vamos criar um gráfico da variável "Sepal.Length" da espécie "setosa" dos dados "iris". Sabemos que os dados tem 50 observações de cada espécie.
+No exemplo seguinte criaremos um gráfico da variável "Sepal.Length" da espécie "setosa" dos dados "iris". Sabemos que os dados tem 50 observações de cada espécie.
 
 ---
 
-```{r}
+```{r plot13, fig.align='center'}
 setosa <-iris[which(iris$Species == "setosa"),]
 plot(setosa$Sepal.Length, setosa$Sepal.Width)
 
@@ -359,11 +367,11 @@ plot(setosa$Sepal.Length, setosa$Sepal.Width)
 ---
 
 Agora vamos adicionar outra camada de pontos, desta vez da especie "virginica", em color vermelho.
-Primeiro plotamos o mesmo gráfico anterior da especie setosa e depois adicionamos a camada.
+Primeiro será plotado o mesmo gráfico anterior da especie setosa e depois adicionaremos a camada.
 
 ---
 
-```{r}
+```{r plot14, fig.align='center'}
 # gráfico anterior
 plot(setosa$Sepal.Length, setosa$Sepal.Width)
 
@@ -377,11 +385,11 @@ points(virginica $Sepal.Length, virginica $Sepal.Width, col = "red", pch = 19)
 
 O que aconteceu com as 50 observações da espécie adicionada??
 
-A função _plot()_ tem uma limitação na sua execução e é que uma vez aberto o espaço gráfico, ele não é redimensionado pela chegada de novos dados superpostos. O correto é analisar os novos dados e ver de dimensionar adequadamente os eixos. No caso anterior seria
+A função _plot()_ tem uma limitação na sua execução e é que uma vez aberto o espaço gráfico, ele não é redimensionado pela chegada de novos dados superpostos. O correto é analisar os novos dados e procurar dimensionar adequadamente os eixos. No caso anterior seria:
 
 ---
 
-```{r}
+```{r plot15, fig.align='center'}
 # gráfico anterior
 plot(setosa$Sepal.Length, setosa$Sepal.Width,
      xlim = c(4,8),
@@ -396,11 +404,11 @@ points(virginica $Sepal.Length, virginica $Sepal.Width, col = "red", pch = 19)
 
 ---
 
-Um outro uso da função _points()_ que pode ser de utilidade, é quando precisamos destacar ou mostrar valores determinados ou discrepantes. Vamos supor que nesses dados graficados, todas as medidas sepal.lenght superiores a 7.5 são valores a destacar.
+Um outro uso da função _points()_ que pode ser de utilidade quando precisamos destacar ou mostrar valores determinados ou discrepantes. Vamos supor que nesses dados graficados, todas as medidas sepal.lenght superiores a 7.5 são valores a destacar.
 
 ---
 
-```{r}
+```{r plot16, fig.align='center'}
 plot(virginica$Sepal.Length, virginica$Sepal.Width)
 
 destacados <- virginica[which(virginica$Sepal.Length > 7.5),]
@@ -411,11 +419,11 @@ points(destacados$Sepal.Length,destacados$Sepal.Width, pch =17, col = "red")
 
 ---
 
-A função **plot()** vai sempre tratar de determinar qual o melhor gráfico para seus dados, veja o seguinte exemplo usando o dataframe _iris_, do qual vamos imprimir as primeiras 6 linhas para relembrar a estrutura.
+A função **plot()** vai sempre tratar de determinar qual o melhor gráfico para seus dados. Vejamos o seguinte exemplo usando o dataframe _iris_, do qual vamos imprimir as primeiras 6 linhas para relembrar a estrutura.
 
 ---
 
-```{r}
+```{r plot17, fig.align='center', fig.height=7}
 iris <- datasets::iris
 
 head(iris)
@@ -425,10 +433,10 @@ plot(iris)
 
 ---
 
-É claro que o gráfico com as espécies como mais uma variável não é informativa. Vamos agora a graficar apenas as primeiras 4 variáveis de interesse e plotar os pontos com diferentes cores, acorde a variável "Species".
+Pode-se perceber que o gráfico não é informativo quando as espécies são utilizadas como mais uma variável. Vamos agora graficar apenas as primeiras 4 variáveis de interesse e plotar os pontos com diferentes cores, conforme a variável "Species".
 
 
-```{r}
+```{r plot18, fig.align='center', fig.height=7}
 iris <- (datasets::iris)
 attach(iris)
 
@@ -440,8 +448,10 @@ par(oma  = c(5,5,5,3),
 
 plot(iris[1:4], 
      col= iris$Species)
+```
 
 
+```{r plot19, fig.align='center', fig.height=4, fig.width=4}
 plot(Sepal.Length, 
      xlim = c(4,9),
      ylim = c(1,5),
