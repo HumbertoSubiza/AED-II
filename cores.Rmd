@@ -1,0 +1,422 @@
+---
+title: "Análise Exploratório de Dados - Parte 2"
+author: "WHSP"
+date: "14 de setembro de 2017"
+output: 
+#      word_document
+      html_document
+---
+## Visualização avançada - cores
+
+---
+
+#### As cores no R base
+
+A representação das cores no R está baseada no sistema hexadecimal (base 16), sendo que cada caracter pode ter 16 possíveis símbolos (0:9, A:F). Nessa escala, "00" é o valor numérico 0.0 e "FF" representa 1.0. Assim, sendo temos mais de 16 milhões de cores, no sistema de armazenamento de 24 bits ($256^3$)
+
+As cores no R podem ser especificadas de diferentes formas ;
+
+1- pelo nome: R tem 657 nomes de cores já definidos, 
+
+2- através de valores fornecidos pelos métodos: 
+
+  -"rgb" combinação das cores primárias vermelho, verde e azul. A combinação  "rgb" é reprentada com dois caracteres para cada cor, como **#rrggbb**.
+
+Assim sendo a cor  preta é "#000000", branca é "#FFFFFF", e vermelha "#FF0000". A representação neste sistema pode ter mais dois caracteres adicionais na mesma escala para indicar a transparência (alpha): **#rrggbbaa**
+
+Um outro sistema de valores de escala é o numérico, com amplitude entre 0 e 255 e alpha na mesma escala, assim sendo a cor vermelha que no sistema hexadecimal é "#FF0000", neste sistema é "255,0,0". A função _ccolorspace::ol2rgb()_ transforma qualquer sistema de cores para o sistema "rgb" nesta escala.
+
+```{r col2rgb}
+pal <- col2rgb(c("black", "#FFFFFF", "#FF0000"))
+colnames(pal) <- c("preto","branco", "vermelho")
+# exibe tabela das cores
+pal
+```
+
+---
+
+  -"hsv" (matiz, saturação e valor de brilho). Função _hsv(h,s,v,alpha)_. Os valores estão entre 0 e 1 com a transparência na mesma escala.  
+  
+  -"hcl" (matiz, cromacidade e luminosidade). Função _hcl(h,s,v,alpha)_. os valores estão entre 0 e 360, sendo que 0 corresponde á cor vermelha, 120 é a cor verde e 240 a cor azul.
+  
+---
+
+#### Cores padrão
+
+Dos 657 nomes de cores já definidos, R vem com 8 cores numa paleta padrão, que tanto podem ser chamadas pelo nome, pelo número ou serem assignados automáticamente quando fazemos um gráfico. Elas são "recicláveis" ou seja que se temos mais de 8 cores a representar, o R vai repetir as cores a partir do primeiro, tantas vezes quanto necessário.
+
+As 8 cores básicos são na ordem do primeiro ao oitavo:
+
+- "black", "red", "green3", "blue", "cyan", "magenta", "yellow" e "gray".
+
+
+
+vejamos os seguintes exemplos:
+
+```{r plot01_02, fig.align='center'}
+tabela <- table(rep(c("nenhum","básico", "médio", "graduação", "pós-graduação"),c(200, 3000, 1200, 900, 345)))
+
+# especificamos as cores por número ou posição no vetor
+barplot(tabela, 
+        col = 1:5)
+
+# especificamos as cores pelo nome
+barplot(tabela, 
+        col = c("black", "red", "green3", "blue", "cyan"))
+
+```
+
+---
+
+ Como expressado, R tem 657 cores já  definidas, vamos mostrar as primeiras 50.
+
+```{r mostra_50_cores}
+colours()[1:50]
+```
+
+---
+
+A paleta pode ser personalizada com as cores que escolhemos da seguinte forma:
+
+```{r paleta_pessoal, fig.align='center'}
+palette(c("aquamarine","brown1","chartreuse","burlywood","azure" ))
+barplot(tabela, 
+        col = c(1:5))
+```
+
+---
+
+Também é possível destacar valores em forma especial. No gráfico anterior queremos salientar o maior valor...
+
+```{r destaca_valores, fig.align='center'}
+#c("gray82", "white", "white", "white")não esqueça de retornar aos valores padrão de cores, o essa paleta vai continuar pintando seus gráficos daqui para a frente!!
+palette("default")
+barplot(tabela, 
+        col = c(2,8,8,8,8))
+```
+
+---
+
+O fundo dos gráfico pode ser mudado com o parâmetro "bg"
+
+```{r muda_bg, fig.align='center'}
+#Definição da cor do fundo
+cor <- c("#FFEFD5")
+
+# modificação do parâmetro nas configurações
+par(bg = cor, 
+    fg = "red")
+
+# gráfico com fundo trocado
+barplot(tabela, 
+        col = c(2,8,8,8,8))
+```
+
+--- 
+
+Uma forma fácil de escolher cores é através do pacote "_colourpicker_", que uma vez instalado aparece no menu superior em "Addins", como "**Colour Picker**" e após o seu uso e fechamento, o pacote passa um vetor com os nomes das cores escolhidas, da forma:
+
+**c("#EEEE00", "#FFD700", "#FFB90F", "#FF7F00", "#CDAD00")**, ou pelos seus nomes:
+
+**c("yellow2", "gold", "goldenrod2", "gold3", "darkgoldenrod3")**.
+
+ ### Experimente escolher uma paleta de 6 cores a sua escolha!
+ 
+ ### Experimente também "**Plot Colour Helper**", veja o seguinte exemplo:
+ 
+---
+ 
+```{r gplot_color_helper, warning=FALSE, fig.align='center'}
+CPCOLS <- c("#1F78B4", "#33A02C", "#E31A1C")
+
+library(ggplot2)
+
+ggplot(iris, aes(Sepal.Length, Petal.Length)) +
+      geom_point(aes(col = Species))          +
+      scale_colour_manual(values = CPCOLS)
+```
+
+---
+
+#### Rampas de cores
+
+R vem com 6 rampas diferentes de cores. São elas:
+
+- **rainbow, heat.colors, terrain.colors, topo.colors, cm.colors e gray.colors**. 
+
+Vejamos um exemplo. Vamos criar um vetor "p":
+
+---
+
+```{r, uso_rampas1, fig.width= 8, fig.height=10, fig.align='center'}
+par(mfrow = c(2,1))
+p <- -sin(5 * pi * ((1:50)- 1/2)/50)
+plot(p, pch = 21, cex = c(1,2,3,4,5), bg = rainbow(50, start = 0, end = .90, alpha = 0.4))
+plot(p, pch = 21, cex = c(1,2,3,4,5,4,3,2), bg = gray.colors(50,alpha = 0.6))
+```
+
+---
+
+#### Outros sistemas de cores, criar rampas
+
+```{r cria_rampas}
+# sistema rgb na rampa de 21 cores
+cor.rgb <- rgb(.6, seq(0, 1, 0.05), 0.6)
+
+# criamos uma rampa de 21 cores, sistema hsv
+cor.hsv <- hsv(.6, seq(0, 1, 0.05), 0.6)
+
+# criamos uma rampa de 21 cores, sistema hcl
+cor.hcl <- hcl(seq(40,240,10),seq(10,210,10), 20,0.5)
+```
+
+---
+
+```{r usa_rampas, fig.align='center'}
+# usando a rampa já definida "gray.colors"
+plot(p, pch = 21, 
+     cex    = c(1,2,3,4,5), 
+     bg     = gray.colors(21,alpha = 0.6))
+
+#usando a rampa em rgb
+plot(p, pch = 21, 
+     cex    = c(1,2,3,4,5), 
+     bg     = cor.rgb)
+
+#usando a rampa em hsv
+plot(p, pch = 21, 
+     cex    = c(1,2,3,4,5), 
+     bg     = cor.hsv)
+
+#usando a rampa em hcl
+plot(p, pch = 21, 
+     cex    = c(1,2,3,4,5), 
+     bg     = cor.hcl)
+```
+
+----
+
+#### Perfumaria e varias
+
+A biblioteca "paletter" permite fazer uma paleta de cores baseada nas cores de uma imagem. Neste exemplo vamos usar uma imagem do quarto de Van Gogh para criar uma paletta de 9 cores. 
+
+---
+
+![Van Gogh](D:/Users/humberto.pina/Documents/Oficina AED com R-II 2017/curso/02 R/03 cores/quarto_VG.JPG)
+
+---
+
+O resultado se apresenta como um vetor de 9 posições com as cores em sistema hexadecimal. Lembre que também podemos transformar as cores em sistema rgb se for o desejado.
+
+---
+
+```{r cria_paletta}
+library(paletter)
+colours_vector <- palette_maker("quarto_VG.jpg", number_of_colors = 9)
+colours_vector
+```
+
+---
+
+Veja no exemplo seguinte como usar uma paleta de 32 cores para plotar dados da base "mtcars"
+
+```{r exemplo_paletta, fig.align='center', fig.width=14, fig.height=8}
+library(ggplot2)
+colours_vector <- palette_maker("quarto_VG.jpg", number_of_colors = 32)
+
+ggplot(data = mtcars, aes( x = disp, y = hp, color = rownames(mtcars))) +
+  geom_point(stat = 'identity', aes(size = cyl))  +
+    scale_color_manual(values = colours_vector)   +
+      theme_classic()                             +
+        geom_text(label = rownames(mtcars), size = 3.5,
+                  color = 'grey40',
+                  check_overlap = TRUE)           +
+          guides(size = FALSE)                    +
+            theme(legend.position = "left")     +
+              labs(title = "Deslocamento vs. potência, \ntamanho por número de cilidros")
+```
+
+---
+
+Finalmente escolha uma paleta de cores a partir da seguinte figura de um quadro de Seurat: 
+
+![Dimanche](D:/Users/humberto.pina/Documents/Oficina AED com R-II 2017/curso/02 R/03 cores/dimanche.JPG)
+
+Coloque cores no gráfico a seguir: 
+
+
+```{r reordena_ggplot, fig.align='center'}
+# função que ordena as categorias por ordem crescente
+reorder_size <- function(x) {
+  factor(x, levels = names(sort(table(x))))
+}
+
+# gráfico de barras com as categorias ordenadas por número de elementos
+ggplot(mpg, aes(reorder_size(class))) + 
+  geom_bar()                          +
+    labs(title ="Gráfico de barras simples, ordenado por quantidade de elementos") +
+      labs(subtitle = "Função disponível em: ggplot2::geom_bar examples")
+
+```
+
+---
+
+#### solução:
+
+```{r barras, fig.align='center'}
+ library(paletter)
+ colours_vector2 <- palette_maker("dimanche.jpg", number_of_colors = 9)
+ # escolha das 7 cores em forma manual
+ cores <- colours_vector2[c(1,2,9,8,6,5,4)]
+
+# gráfico de barras com as categorias ordenadas por número de elementos
+ggplot(mpg, aes(reorder_size(class))) + 
+  geom_bar(aes(fill = class)  )                        +
+    scale_fill_manual(values = cores) +
+    labs(title ="Gráfico de barras simples, ordenado por quantidade de elementos") +
+      labs(subtitle = "Função disponível em: ggplot2::geom_bar examples") + 
+  theme_classic()
+```
+
+---
+
+
+Note que a função:
+
+  - **scale_fill_manual()** é usada para box plot, bar plot, violin plot, etc, e
+  
+  - **scale_color_manual()** para linhas ou pontos.
+
+---
+
+#### Casos especiais de visão
+  
+  A seguinte figura testa a visão das pessoas para cegueira  ou confusão entre vermelho, verde e azul.
+  
+---
+  
+![Teste  de visão](D:/Users/humberto.pina/Documents/Oficina AED com R-II 2017/curso/02 R/03 cores/teste_visao.JPG)
+
+---
+
+Pessoas com a visão normal deveriam ler os números contidos nos círculos, na sequência: **25, 29, 45, 56, 6, 8**.
+
+Já as pessoas com deficiência visual, conseguiriam ler: **25, pontos, pontos, 56, pontos, pontos**. Calcula-se que 1 em cada 12 pessoas tenha essa deficiência.
+
+No R temos um pacote especial para colorir gráficos que resolve esse problema, é o pacote **_dichromat_**. Ele retira o contrate vermelho-verde e verde-azul, assim como traz 17 esquemas de cores para contornar essa deficiência.
+
+Na figura a seguir vemos quatro barras de cores: uma normal e três para os diferentes tipos de daltonismo; **deuteranomalia** (verde), **protanomalia** (vermelho) e **tritanomalia** (azul). 
+
+#### Referências
+
+_Brettel H, Viénot F, Mollon, JD (1997). Computerized Simulation of Color Appearance for Dichromats. Journal of the Optical Society of America A, 14, 2647–2655._
+
+_Viénot F, Brettel H, Ott L, M'Barek AB, Mollon JD (1995). What Do Colour-Blind People See? Nature, 376, 127–128._
+
+_Viénot F, Brettel H, Mollon JD (1999). Digital Video Colourmaps for Checking the Legibility of Displays by Dichromats. Color Research and Application, 24(4), 243–252._
+
+---
+
+```{r fig.height=8, warning=FALSE, fig.align='center'}
+library(dichromat)
+## standard color schemes
+ data("dalton", package = "dichromat")
+ par(mfrow = c(4, 1))
+ image(matrix(1:256, 128), col = dalton.colors$normal)
+ image(matrix(1:256, 128), col = dalton.colors$deutan)
+ image(matrix(1:256, 128), col = dalton.colors$protan)
+ image(matrix(1:256, 128), col = dalton.colors$tritan)
+```
+
+---
+
+#### Referências:
+
+_Light A, Bartlein PJ (2004). The End of the Rainbow? Color Schemes for Improved Data Graphics. EOS Transactions of the American Geophysical Union, 85(40), 385._
+
+---
+
+```{r paletas_dalt, fig.align='center'}
+pal <- function(col, ...)
+  image(seq_along(col), 1, matrix(seq_along(col), ncol = 1),
+  col = col, axes = FALSE, ...)
+
+opar <- par(mar = c(1, 2, 1, 1))
+
+layout(matrix(1:6, ncol = 1))
+pal(colorschemes$BrowntoBlue.10, main = "Marrom para Azul (10)")
+
+pal(colorRampPalette(colorschemes$BrowntoBlue.10, space = "Lab")(100),
+  main = "Rampa Marrom para Azul")
+
+pal(dichromat(colorschemes$BrowntoBlue.10),
+  main = "Marrom para Azul (10) -- deuteranopia")
+
+pal(colorschemes$Categorical.12, main = "Categorias -- (12)")
+
+pal(dichromat(colorschemes$Categorical.12),
+  main = "Categorias (12) -- deuteranopia")
+
+pal(dichromat(colorschemes$Categorical.12, "protan"),
+  main = "Categorias (12) -- protanopia")
+par(opar)
+```
+
+---
+
+Vamos ver como ficaria o último gráfico de barras feito usando um esquema especial para daltônicos.
+
+---
+
+```{r plot03, fig.align='center'}
+# criação de paleta especial para daltônicos, usando o esquema  "BluetoOrange.8"
+cores.dalt <- dichromat(colorschemes$BluetoOrange.8)
+  
+# gráfico de barras com as categorias ordenadas por número de elementos
+ggplot(mpg, aes(reorder_size(class))) +
+  geom_bar(aes(fill = class)  )                        +
+    scale_fill_manual(values = cores.dalt) +
+    labs(title ="Gráfico de barras simples, ordenado por quantidade de elementos") +
+      labs(subtitle = "Função disponível em: ggplot2::geom_bar examples \nCores escolhidas para daltônicos") +
+  theme_classic()
+
+```
+
+---
+
+##### Considerações finais
+
+Nossos computadores e vídeos trabalham com o sistema de cores tratado aqui; **rgb**. Na obtenção das cores ele trabalha somando as cores (sistema aditivo), mas podemos ter diferenças entre diversos vídeos, já que na realidade eles não existem no aparelho. A formação das cores pode ser diferente entre diferentes vídeos e a fidelidade à cor pode estar comprometida.
+
+Na impressão por outro lado, o sistema trabalha por subtração das cores Cyano, Magenta, Amarelo e Preto (sistema CMYK). 
+
+Podemos imprimr diretamente um gráfico em pdf, determinando o modelo de cores como 'cmyk', como mostrado nos seguintes exemplos:
+
+--
+
+```{r, plot04, message=FALSE, fig.align='center'}
+pdf("plot1_rgb.pdf")
+pie(1:8, col=1:8)
+dev.off()
+```
+
+```{r, plot05, message=FALSE, fig.align='center'}
+pdf("plot2_cmyk.pdf", colormodel='cmyk')
+pie(1:8, col=1:8)
+dev.off()
+```
+
+---
+
+Veja as diferenças entre os gráficos salvos no diretório de trabalho...
+
+---
+
+No caso de precisar imprimir um trabalho em que as cores devam ser preservadas, recomenda-se salva-las e transformá-las em sistema 'cmyk' com um software específico de imagens como Photoshop por exemplo.
+
+---
+
+FIM AED - PARTE2
+
+---
+
