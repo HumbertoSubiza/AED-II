@@ -7,7 +7,7 @@ output:
   html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup_lib, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(MASS)
@@ -33,7 +33,7 @@ O gráfico é um mapeamento de dados, a partir de atributos estéticos de objeto
 
  Baseado nesses conceitos, Hadley Wickman em _Layered Grammar of Graphics_, estabelece que um gráfico pode ser construído a partir de camadas que são adicionadas sucessivamente.
 
- Assim surgiu o pacote **ggplot2** (Create Elegant Data Visualisations Using the Grammar of Graphics) de Hadley Wickman e Winston Chang (ver na ajuda _?ggplot2_ ).
+ Assim surgiu o pacote **ggplot2** (Create Elegant Data Visualisations Using the Grammar of Graphics) de Hadley Wickman e Winston Chang. Veja ajuda _?ggplot2_ ).
  
 ---
  
@@ -95,13 +95,12 @@ Nos próximos exemplos começaremos com um gráfico simples até apresentar um g
 
 #### 1- gráfico simples
 
-Vamos fazer um gráfico de um conjunto de dados da biblioteca **MASS**, que contém a média de peso corporal e do cérebro de 62 animais mamíferos.
+Faremos um gráfico de um conjunto de dados da biblioteca **MASS**, que contém a média de peso corporal e do cérebro de 62 animais mamíferos.
 
-Para o gráfico vamos indicar ao **ggplot** que vamos trabalhar com o dataframe **mammals** e no eixo "x" vamos colocar o peso do corpo e no eixo "y" o do cérebro.
+Para o gráfico vamos indicar ao **ggplot** que vamos trabalhar com o dataframe **mammals** e no eixo "x" colocaremos o peso do corpo e no eixo "y" o do cérebro.
 
 
-```{r  aedII_1_01, message=FALSE}
-library(MASS)
+```{r  ggplot_3_01, message=FALSE, fig.align='center'}
 ggplot(mammals, aes(x = body, y = brain)) + # estes são os dados e o mapeamento
   geom_point() # camada de geometria adicionada, no caso, pontos
 ```
@@ -118,13 +117,13 @@ No gráfico acima temos apenas duas camadas: os dados na primeira e o tipo de re
 
 Adicionamos às camadas anteriores uma camada complementar de estatística, o gráfico da linha simples de regressão linear. 
 
-Notem que não é necessário fazer nenhum tipo de cálculo prévio, apenas incluir na camada que a metodologia é **"lm"** e indicar uma cor vermelha para o traçado e que não vamos precisar do intervalo de confiança da regressão, indicado por **"se = F"**. A adição de **_smooth** na chamada da estatística, introduz um fator de suavizado na linha graficada (ver a ajuda).
+Notem que não é necessário fazer nenhum tipo de cálculo prévio, apenas incluir na camada que a metodologia é **"lm"** e indicar uma cor vermelha para o traçado. Também não será necessário o intervalo de confiança da regressão, indicado por **"se = F"**. 
 
-Além disso será adicionada uma transparência aos pontos graficados para melhor visualização de sobreposição.
+A adição de **_smooth** na chamada da estatística, introduz um fator de suavizado na linha graficada (ver a ajuda). Além disso será adicionada uma transparência aos pontos graficados para melhor visualização de sobreposição.
 
 ---
 
-```{r aedII_02}
+```{r ggplot_3_02, fig.align='center'}
 ggplot(mammals, aes(x = body, y = brain)) +
   geom_point(alpha = 0.6) +
   stat_smooth(method = "lm", col = "red", se = F)
@@ -132,7 +131,7 @@ ggplot(mammals, aes(x = body, y = brain)) +
 
 ---
 
-Analisado o gráfico pareceria que os dados necessitam de uma transformação nas unidades, já que existe disparidade de valores e concentração dos valores menores. 
+Analisando o gráfico é possível perceber que os dados necessitam de uma transformação de escala, já que existe disparidade de valores e concentração dos valores menores. 
 
 Uma transformação log pode resolver o problema. Para manter a relação de unidades entre os eixos, adicionamos uma camada **coord_fixed()**, que por padrão vai manter a relação y/x = 1.
 
@@ -143,7 +142,7 @@ Na sequência transforma-se os eixos com log10 e finalmente adiciona-se a linha 
 #### 3- gráfico com transformação da escala para melhor representação
 
 
-```{r aedII_03}
+```{r ggplot_3_03, fig.align='center'}
 ggplot(mammals, aes(x = body, y = brain)) +
   geom_point(alpha = 0.6) +
   coord_fixed()           +
@@ -155,17 +154,17 @@ ggplot(mammals, aes(x = body, y = brain)) +
               size   = 1)
 ```
 
-Nota-se que a transformação melhorou o aspecto do gráfico e o análise dos dados, já que a relação entre as variáveis era logarítmica.
+Nota-se que a transformação melhorou o aspecto do gráfico e a análise dos dados, já que a relação entre as variáveis era logarítmica.
 
 ---
 
-#### Para publicação, com padronização dos intervalos de escala em ambos eixos
+#### Formato para publicação
 
-Para deixar finalmente nosso gráfico num formato adequado para publicação e apresentação, será necessário padronizar os intervalos em ambos eixos, adicionar um título e subtítulo, indicando a fonte de donde os dados foram obtidos e finalmente deixar o gráfico apenas em preto e branco, já que muitas editoras não permitem outras cores, sem fundo colorido nem grade.
+Para deixar finalmente nosso gráfico num formato adequado para publicação e apresentação, será necessário padronizar os intervalos em ambos eixos, adicionar um título e subtítulo, indicando a fonte dos dados e finalmente deixar o gráfico apenas em preto e branco (já que muitas editoras não permitem outras cores), sem fundo colorido e sem grade.
 
 ---
 
-```{r aedII_04}
+```{r ggplot_3_04, fig.align='center'}
 library(scales)
 ggplot(mammals, aes(x = body, y = brain)) +                     # dados
   geom_point(size = 1.8, alpha = 0.6) +                        # tipo de geometria
@@ -188,9 +187,10 @@ ggplot(mammals, aes(x = body, y = brain)) +                     # dados
 
 ---
 
-###Adicionando todas as camadas num gráfico. 
+### Adicionando camadas 
 
-Já vimos que um gráfico na metodologia **ggplot** se compõe de diferentes camadas. Por questões de simplicidade clareza, a ordem de adição das camadas é:
+Já vimos que um gráfico na metodologia **ggplot** é composto por diferentes camadas. Por
+questões de simplicidade e clareza, a ordem de adição das camadas é:
 
 ####Ordenamentos dos dados
  **dados + aesthetics + geometrias + fatores + estatísticas + coordenadas + temas**
@@ -204,7 +204,7 @@ Os dados a serem usados são de **datasets::iris** e contém medições de sépa
 
 ---
 
-```{r aedII_05}
+```{r ggplot_3_05}
 head(iris)
 str(iris)
 ```
@@ -219,7 +219,7 @@ A _primeira camada_ contendo os dados e mapeamento dos valores (aesthetics) é:
 
 ---
 
-```{r aedII_06}
+```{r ggplot_3_06, fig.align='center'}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width))
 ```
 
@@ -229,7 +229,7 @@ A _segunda camada_ corresponde a geometria que representará os dados, neste cas
 
 ---
 
-```{r aedII_07}
+```{r ggplot_3_07, fig.align='center'}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_jitter(alpha = 0.6)
 ```
@@ -240,7 +240,7 @@ A _terceira camada_ incorpora uma linha de regressão, na cor vermelha e sem int
 
 ---
 
-```{r aedII_08}
+```{r ggplot_3_08, fig.align='center'}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_jitter(alpha = 0.6) +
   stat_smooth(method = "lm", se = F, col = "red")
@@ -256,11 +256,11 @@ A _quarta camada_ vai permitir dividir os dados por espécies (fatores) e aprese
 
 Isto permite comparar as distribuições e valores para cada espécie, além de apresentar as linhas de regressão por separado. 
 
-A fatorização dos dados e a divisão em três gráfico é feita com a camada **facet_grid**, indicando no primeiro argumento com o ponto "**.**", os dados a serem fatorizados (que vem da primeira camada) e sendo o segundo argumento o critério ou coluna usada como fator.
+A fatoração dos dados e a divisão em três gráficos é feita com a camada **facet_grid**, indicando no primeiro argumento com o ponto "**.**", os dados a serem fatorizados (que vem da primeira camada) e sendo o segundo argumento o critério ou coluna usada como fator.
 
 ---
 
-```{r aedII_09}
+```{r ggplot_3_09, fig.align='center'}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_jitter(alpha = 0.6) +
   stat_smooth(method = "lm", se = F, col = "red") +
@@ -273,11 +273,11 @@ Na _quinta camada_ (coordenadas) vamos incluir escalas de coordenadas personaliz
 
  ver  ajuda para **scale_x_continuos, scale_y_continuos e coord_equal**
 
-Com isto colocamos todos os gráficos na mesma escala numérica e de aparência. Note que nas camadas **scale**, colocamos a legenda de cada eixo, os limites e a distância do eixo que serão colocados (veja ajuda para mais detalhes).
+De esta forma, colocamos todos os gráficos na mesma escala numérica e de aparência. Note que nas camadas **scale**, colocamos a legenda de cada eixo, os limites e a distância do eixo que serão colocados (veja ajuda para mais detalhes).
 
 ---
 
-```{r aedII_10, warning=FALSE}
+```{r ggplot_3_10, fig.align='center', warning=FALSE}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_jitter(alpha = 0.6) +
   facet_grid(. ~ Species)  +
@@ -297,7 +297,7 @@ Finalmente na _sexta camada_ adicionamos um tema ou aparença personalizada, no 
 
 ---
 
-```{r aedII_11, warning=FALSE}
+```{r ggplot_3_11, fig.align='center', warning=FALSE}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
   geom_jitter(alpha = 0.6) +
   facet_grid(. ~ Species)  +

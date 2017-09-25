@@ -28,7 +28,7 @@ A separação no caso dos pontos pode ser especificamente determinada através d
 
 ---
 
-```{r}
+```{r ggplot01, fig.align='center'}
 posn.j <- position_jitter(width = 0.2)
 
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
@@ -47,7 +47,7 @@ Existem diversas funções de escala, vamos mostrar duas interessantes e muito u
 Veja o exemplo:
 
 
-```{r, warning=FALSE}
+```{r ggplot02, fig.align='center',warning=FALSE}
 # as primeiras duas camadas são as básicas de plotagem, com dados e geometria
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
     geom_point(position = "jitter")                                 +
@@ -79,12 +79,16 @@ Nos exercícios a seguir, toda instrução que tenha a
 
 ---
 
-#### **_<span style="color:blue">Com a base de dados mtcars, faça um gráfico das variáveis "disp" e "mpg", use a variável "cyl" para separar por fatores e dê cor em cada um. Adicione título e legendas nos eixos. As escalas dos eixos devem ser: 0-500 e 0-40 respectivamente, escolha o intervalo que crea adequado, </span>_**
+#### **_<span style="color:blue">Exercício 01. Com a base de dados mtcars, faça um gráfico das variáveis "disp" e "mpg", use a variável "cyl" para separar por fatores e dê cor em cada um. Adicione título e legendas nos eixos. As escalas dos eixos devem ser: 0-500 e 0-40 respectivamente, escolha o intervalo que crea adequado, </span>_**
 
 ---
 
-```{r}
-# Solução:
+**Solução**
+
+---
+
+```{r ggplot03, fig.align='center'}
+# Solução Exercício 01.
 # primeira camada, dados e mapeamento de variáveis, cor pelo cilindro
 ggplot(mtcars, aes(x=disp, y = mpg, col = factor(cyl)))             +
 
@@ -124,7 +128,7 @@ Exemplo
 
 ---
 
-```{r}
+```{r ggplot04, fig.align='center'}
 # primeiro gráfico, a cor está definida globalmente acorde factor(cyl)
 ggplot(mtcars, aes(x=disp, y = mpg, col = factor(cyl)))             +
   geom_point() 
@@ -149,7 +153,7 @@ Para isso vamos calcular primeiro a média por espécie e guardar numa variável
 No nosso caso, vamos usar o dataframe "iris", columnas 1 a 4, agrupadas pela coluna 5, "Species" e para cada grupo calculamos a média:
 
 
-```{r}
+```{r iris_resumo}
 iris.resumo <- aggregate(iris[1:4], by = list(iris$Species), mean)
 
 # para evitar conflitos de nomes na determinação das cores, colocamos o nome
@@ -166,7 +170,7 @@ A quarta camada vai dar o nome na legenda, como já feito em exemplos anteriores
 
 ---
 
-```{r}
+```{r ggplot05, fig.align='center'}
 # primeira camada com a definição dos dados e cor
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species))       +
 
@@ -187,7 +191,7 @@ Na escolha das formas, temos 25 diferentes, sendo as últimas 5 com preenchiment
 
 ---
 
-```{r}
+```{r ggplot06, fig.align='center'}
 # gráfico das 25 formas diferentes
 df2 <- data.frame(x = 1:5 , y = 1:25, z = 1:25)
 s <- ggplot(df2, aes(x, y))
@@ -206,14 +210,18 @@ s + geom_point(aes(shape = z), size = 4, colour = "Red", fill = "Black") +
 
 ---
 
-#### **_<span style="color:blue">Com a base de dados "mtcars"", calcule primeiro as médias dos valores de "mpg" e "qsec", depois faça um gráfico das variáveis "mpg" e "qsec", usando a variável "gear" e dê cor em cada um.</span>_** 
+#### **_<span style="color:blue">Exercício 02. Com a base de dados "mtcars"", calcule primeiro as médias dos valores de "mpg" e "qsec", depois faça um gráfico das variáveis "mpg" e "qsec", usando a variável "gear" e dê cor em cada um.</span>_** 
 
 #### **_<span style="color:blue">Adicione uma camada com as médias calculadas, com forma 24, de borda vermelha e preenchimento preto, use alpha =0.5. Adicione título e tema a sua escolha. </span>_**
 
 ---
 
-```{r}
-# Solução:
+**Solução**
+
+---
+
+```{r ggplot07, fig.align='center'}
+# Solução Exercício 02
 # cálculo das médias
 mtcars.resumo <- aggregate(mtcars[,c(1,7)], by = list(mtcars$gear), mean)
 
@@ -258,7 +266,7 @@ Atentar como se cria uma determinada ordem para graficar depois os dados, usando
 
 ---
 
-```{r}
+```{r ggplot08, fig.align='center'}
 # crio um vetor com o nome dos meses
 nome.meses <- c("Jan", "Fev", "Mar", "Abril","Mai", "Jun", "Jul", "Ago", "Set", "out", "Nov", "Dez")
 
@@ -286,12 +294,16 @@ ggplot(media.temp, aes(x = meses, y = temp, group = cidades, color = cidades)) +
 
 ---
 
-#### **_<span style="color:blue">Adicione no fragmento de código anterior uma linha suavizada sem intervalo de confiança. Especifique o tipo da linha diferente da linha anterior (linetype). Experimente colocar o intervalo de confiança e diferentes temas. Mude o título para refletir a mudança do gráfico.</span>_** 
+#### **_<span style="color:blue">Exercício 03. Adicione no fragmento de código anterior uma linha suavizada sem intervalo de confiança. Especifique o tipo da linha diferente da linha anterior (linetype). Experimente colocar o intervalo de confiança e diferentes temas. Mude o título para refletir a mudança do gráfico.</span>_** 
 
 ---
 
-```{r}
-# Solução:
+**Solução**
+
+---
+
+```{r ggplot09, fig.align='center'}
+# Solução Exercício 03
 # gráfico do dataframe, primeiro os dados e mapeamento de variáveis
 ggplot(media.temp, aes(x = meses, y = temp, group = cidades, color = cidades))   +
 
@@ -323,7 +335,7 @@ Feito ou verificado isso, **ggplot2** reconhece a variável como data e trata co
 
 ---
 
-```{r}
+```{r ggplot10, fig.align='center'}
 # grafico de série temporal
 head(economics)
 
@@ -357,7 +369,7 @@ Feita a transformação, a função **autoplot** do própio ggplot faz a visuali
 
 ---
 
-```{r, warning= F}
+```{r ggplot11, warning= F, fig.align='center' }
 # usando ggfortify
 library(ggfortify)
 autoplot(sunspot.year, ts.colour = 'red', ts.linetype = 'dashed') +
@@ -371,11 +383,16 @@ autoplot(sunspot.year, ts.colour = 'red', ts.linetype = 'dashed') +
 ---
 
 
-#### **_<span style="color:blue">No seguinte fragmento do código, personaliza os eixos "x" e "y", dando nome, limites e intervalos a sua escolha</span>_** 
+#### **_<span style="color:blue">Exercício 04. No seguinte fragmento do código, personaliza os eixos "x" e "y", dando nome, limites e intervalos a sua escolha</span>_** 
 
 ---
 
-```{r}
+**Solução**
+
+---
+
+```{r ggplot12, fig.align='center'}
+# Solução do exercício 04
 # usando broom
 library(broom)
 autoplot(sunspot.year, ts.colour = 'red', ts.linetype = 'dashed') +
@@ -394,12 +411,13 @@ autoplot(sunspot.year, ts.colour = 'red', ts.linetype = 'dashed') +
       theme_bw()
 
 ```
+
 ---
 
 Autoplot sirve também para graficar diversas séries temporais de uma mesma época, através da função **facets = ...**
 
 
-```{r}
+```{r ggplot13, fig.align='center'}
 library(ggfortify)
 # a série que tem formato de dataframe é transformada em objeto R "Time-Series"
 

@@ -1,23 +1,22 @@
 ---
-title: "Oficina AED - Parte II"
-author: "Walter Humberto Subiza Pina"
-date: "16 de junho de 2017"
-output: html_document
+title: 
+author:
+date: 
+output:
+#  word_document: default
+  html_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup_lib, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 ```
 
 ---
 
-## Curso de Análise Exploratório de Dados com R - Parte II
-## Visualização de dados com _ggplot2()_
+## Capítulo 3 - Visualização de dados com _ggplot2()_
 
----
-
-#### Exercícios 02
+## c - Elementos gráficos
 
 Nos exercícios a seguir, toda instrução que tenha a 
 
@@ -37,13 +36,13 @@ A unidade de massa foi adotada em 1907 na Quarta Conferência Geral de Pesos e M
 
 ---
 
-O objetivo desta parte é reforçar o aprendido e colocar alguns elementos novos em **ggplot**.
+O objetivo desta parte é reforçar o aprendido e inserir alguns elementos novos em **ggplot**.
 
 Como a base de dados é grande, vamos selecionar um conjunto de 2000 registros em forma aleatória. Com fins de compatibilidade, colocaremos uma semente, faremos a seleção usando a função **dplyr::sample()** e chamaremos os novos dados de "diamantes".
 
 ---
 
-```{r message = FALSE}
+```{r cria_dados, message = FALSE, warning=FALSE}
 library(dplyr)
 set.seed(20170620)
 diamantes <- sample_n(diamonds, 2000)
@@ -51,11 +50,11 @@ diamantes <- sample_n(diamonds, 2000)
 
 ---
 
-#### **_<span style="color:blue">Use str() para conhecer os dados, veja o tamanho do arquivo e as variáveis.</span>_**
+#### **_<span style="color:blue">Exercício 01. Use str() para conhecer os dados, veja o tamanho do arquivo e as variáveis.</span>_**
 
 ---
 
-Os dados contém informação referente a diversas características de diamantes, como precio, corte, color, dimensões de cada um, etc.
+Os dados contém informação referente às diversas características de diamantes, como preço, corte, color, dimensões de cada um, etc.
 
 Nos exercícios anteriores, vimos como mapear os pontos através de **aes()** e graficar com **geom_point()** e **geom_jitter**.
 
@@ -63,45 +62,56 @@ No primeiro gráfico vamos fazer um gráfico de pontos de "carat" e "price", col
 
 ---
 
-```{r}
-ggplot(diamantes, aes(x = carat, y = price)) +
-  geom_point(alpha = 0.3)
+**Solução**
+
+---
+
+```{r gplot01, fig.align='center'}
+# Solução Exercício 01
+
 ```
 
-Na sequência vamos adicionar ao gráfico uma camada complementária de estatística. Para isso usamos sempre o "+" e vamos colocar apenas uma camada **geom_smooth()**.
+---
+
+#### **_<span style="color:blue">Exercício 02. Na sequência adicionaremos ao gráfico uma camada complementária de estatística. Para isso usaremos sempre o "+" e vamos colocar apenas uma camada geom_smooth().</span>_**
+
+---
 
 **Solução**
 
 ---
 
-```{r}
-ggplot(diamantes, aes(x = carat, y = price)) +
-  geom_point(alpha = 0.3) +
-  geom_smooth()
+```{r gplot02, fig.align='center'}
+# Solução Exercício 02
 ```
 
-Devido ao tamanho do arquivo, **geom_smooth()** avisa que para suavizar a curva usou o método _**gam**_. Veja na ajuda referente a metodologia e parâmetros do método.
+Devido ao tamanho do arquivo, **geom_smooth()** sinaliza que, para suavizar a curva, usou o método _**gam**_. Veja na ajuda referente a metodologia e parâmetros do método.
 
 ---
 
 Vamos continuar combinando geometrias.
 
-#### **_<span style="color:blue">Com o fragmento de código anterior, adicione uma cor usando a variável "clarity".</span>_**
+#### **_<span style="color:blue">Exercício 03. Com o fragmento de código anterior, adicione uma cor usando a variável "clarity".</span>_**
 
 ---
 
-```{r}
-# Solução:
+**Solução**
 
+---
+
+```{r gplot03, fig.align='center'}
+# Solução Exercício 03
 
 ```
 
 ---
 
-Note que como a cor foi colocada na camada primeira, ela é considerada um argumento global para todo o gráfico e além de assinar cores diferentes aos pontos, para cada grupo de "clarity", também calculou e colocou uma curva para cada grupo de "clarity", adicionando a legenda do lado direito. 
+Note que como a cor foi colocada na camada primeira, ela é considerada um argumento global para todo o gráfico e além de determinar cores diferentes aos pontos para cada grupo de "clarity", também calculou e colocou uma curva para cada grupo de "clarity", adicionando a legenda do lado direito. 
 
-O gráfico acima ficou muito confuso. Temos varias possibilidades de melhorá-lo:
+Podemos notar que o gráfico acima ficou muito confuso. Para melhorá-lo, dentre várias
+possibilidades, experimente algumas:
 
+#### **_<span style="color:blue">Exercício 04</span>_**
 
 #### **_<span style="color:blue">1- Adicione o argumento "se = F"" para tirar o intervalo de confiança das linhas, ou</span>_**
 
@@ -109,27 +119,33 @@ O gráfico acima ficou muito confuso. Temos varias possibilidades de melhorá-lo
 
 #### **_<span style="color:blue">3- Adicione um tema menos poluído, como "theme_classic()".</span>_** 
  
-#### **_<span style="color:blue">Experimente !!_</span>**
+#### **_<span style="color:blue">Experimente !!</span>_**
 
 ---
 
-```{r}
-# Solução:
+**Solução**
 
+---
+
+```{r gplot04, fig.align='center'}
+# Solução Exercício 04
 
 ```
 
---
+---
 
 Podemos ainda limpar mais o gráfico e mostrar apenas as linhas para cada grupo.
 
-#### **_<span style="color:blue">Usando o código anterior, elimine a camada de pontos e veja o resultado.</span>_**
+#### **_<span style="color:blue">Exercício 05. Usando o código anterior, elimine a camada de pontos e veja o resultado.</span>_**
 
 ---
 
-```{r}
-# Solução:
+**Solução**
 
+---
+
+```{r gplot05, fig.align='center'}
+# Solução Exercício 05
 
 ```
 
@@ -154,12 +170,14 @@ Na sequência iniciaremos um fragmento de código a partir de **diamantes** e vo
 
 ---
 
-#### **_<span style="color:blue">Faça um gráfico, mapeando "carat" no eixo x e "price" no eixo y, salve como "graf.diam".</span>_**
+#### **_<span style="color:blue">Exercício 06. Faça um gráfico, mapeando "carat" no eixo x e "price" no eixo y, salve como "graf.diam".</span>_**
 
+---
 
-```{r}
-# Solução:
+**Solução**
 
+```{r gplot06, fig.align='center'}
+# Solução Exercício 06
 
 ```
 
@@ -167,7 +185,9 @@ Na sequência iniciaremos um fragmento de código a partir de **diamantes** e vo
 
 O objeto ggplot "graf.diam", deve aparecer na sua janela de ambiente (janela 2),
 
-#### **_<span style="color:blue">tome um tempo para analisar o objeto, clicando na seta do lado do nome.</span>_**
+#### **_<span style="color:blue">Exercício 07</span>_**
+
+#### **_<span style="color:blue">Invista tempo para analisar o objeto, clicando na seta do lado do nome.</span>_**
 
 #### **_<span style="color:blue">adicione ao objeto criado uma camada de pontos, geom_point(), salve como graf.diam2.</span>_**
 
@@ -175,67 +195,77 @@ O objeto ggplot "graf.diam", deve aparecer na sua janela de ambiente (janela 2),
 
 ---
 
-```{r}
-# Solução:
+**Solução**
 
+---
+
+```{r gplot07, fig.align='center'}
+# Solução Exercício 07
 
 ```
 
 ---
 
-O argumento da estética **aes()** pode ser colocado dentro da geometria para personalizar a camada.
+Observe que o argumento da estética **aes()** pode ser colocado dentro da geometria para personalizar a camada.
 
 
-#### **_<span style="color:blue">coloque aes() dentro da camada de pontos, especificando a cor acorde a variável "cut", uma transparência de 0.3 e mude a camada para geom_jitter, adicione um titulo com "labs(title = 'Seu titulo')". Salve como graf.diam2.</span>_**
+#### **_<span style="color:blue">Exercício 08. Insira aes() dentro da camada de pontos, especificando a cor acorde a variável "cut", uma transparência de 0.3 e mude a camada para geom_jitter. Adicione um titulo com "labs(title = 'Seu titulo')". Salve como graf.diam2.</span>_**
 
 ---
 
-```{r}
-# Solução:
+**Solução**
 
+---
+
+```{r gplot08, fig.align='center'}
+# Solução Exercício 08
 
 ```
 
 ---
 
-Se desejamos remover a legenda da transparência que não contribui no gráfico, apenas adicione a linha
-**guides(alpha=FALSE)**, mas isso deve ser feito no passo anterior já que se usamos o objeto salvo graf.diam2, ele já traz a legenda embutida. Aproveitamos e mudamos o título da legenda para "Quilates" e adicionamos um subtitulo e um pê de página. Veja no exemplo:
+Se desejar remover a legenda da transparência, que não contribui no gráfico, apenas adicione a linha
+**guides(alpha=FALSE)**, mas isso deve ser feito no passo anterior já que se usamos o objeto salvo graf.diam2, ele já traz a legenda embutida. Aproveite e mude o título da legenda para "Quilates" e adicione um subtitulo e um pê de página. Veja no exemplo:
 
 ---
 
-```{r}
+```{r gplot09, fig.align='center'}
 #graf.diam2 <- graf.diam +
 #                  geom_jitter(aes(col = cut, alpha = 0.3))         +
-#                  labs(title = 'Relação preço-quilate em diamantes', subtitle = "Fonte = ggplot2::diamonds") +
+#                  labs(title = 'Relação preço-quilate em diamantes', subtitle = "Fonte = #ggplot2::diamonds") +
 #                  guides(alpha=FALSE)                                +
-#                  labs(col = "Corte")+
-#                  labs(caption = "Oficina AED - Parte II")
+#                 labs(col = "Corte")+
+#  labs(caption = "Oficina AED - Parte II")
 #graf.diam2
 ```
 
 ---
 
-As legendas nos eixos podem ser trocada e personalizadas com o argumento "labs( x = "novo nome")"
+As legendas nos eixos podem ser trocada e personalizadas usando o argumento "labs( x = "novo nome")"
 
-#### **_<span style="color:blue">Coloque em graf.diam2 o título "Quilates" no eixo x e "Preço" no eixo y. Salve como graf.diam3.</span>_**
+#### **_<span style="color:blue">Exercício 09. Coloque em graf.diam2 o título "Quilates" no eixo x e "Preço" no eixo y. Salve como graf.diam3.</span>_**
+
+
+**Solução**
 
 ---
 
-```{r}
-# Solução:
-
+```{r gplot10, fig.align='center'}
+# Solução Exercício 09
 
 ```
 
 ---
 
-#### **_<span style="color:blue">Finalmente, adicione uma camada de estatística (geom_smooth, sem intervalo de confiança) e escolha um tema do seu gosto para finalizar o exercício. Salve como graf.diam4 e visualize.</span>_**
+#### **_<span style="color:blue">Exercício 10. Finalmente, adicione uma camada de estatística (geom_smooth, sem intervalo de confiança) e escolha um tema do seu gosto para finalizar o exercício. Salve como graf.diam4 e visualize.</span>_**
+
+
+**Solução**
 
 ---
 
-```{r}
-# Solução:
-
+```{r gplot11, fig.align='center'}
+# Solução Exercício 10
 
 ```
 

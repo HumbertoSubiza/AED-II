@@ -132,17 +132,19 @@ ggplot(mpg, aes(reorder_size(class))) +
 
 ---
 
-####**_<span style="color:blue">EXERCICIO</span>_**
+####**_<span style="color:blue">Exercício 01</span>_**
+
+####**_<span style="color:blue">Faça um gráfico de barras empilhado do tipo de carro, separado por tipo de combustivel; adicione um título, subtítulo e pê de página (seu nome e SIAPE) e tema a sua escolha; coloque nomes nos eixos.</span>_**
+
+---
+
+**Solução**
 
 ---
 
 ```{r aed2_aluno01}
-# Exercício
-# faça um gráfico de barras empilhado do tipo de carro, separado por tipo de combustivel
-# adicione um título, subtítulo e pê de página (seu nome e SIAPE) e tema a sua escolha
-# coloque nomes nos eixos
-# Solução:
-# Gráfico com barras empilhadas
+# Solução Exercício
+#
 ggplot(mpg, aes(class))                          + 
   geom_bar(aes(fill = fl), position = "fill")    +
     labs(title    = "Gráfico de barras - cores acorde tipo de combustível", 
@@ -211,17 +213,18 @@ graf2 + geom_boxplot()                                                   +
 
 ---
 
-####**_<span style="color:blue">EXERCICIO</span>_**
+####**_<span style="color:blue">Exercício 02</span>_**
+
+####**_<span style="color:blue">Crie um gráfico de boxplot das variáveis "drv" e "cty". Grafique os pontos com separação (jitter). Coloque títulos nos eixos e principale  deixe os boxplot na horizontal, finalmente adicione um tema a sua escolha</span>_**
+
+---
+
+**Solução**
 
 ---
 
 ```{r aed2_aluno02}
-# Exercício
-# Crie um gráfico de boxplot das variáveis "drv" e "cty"
-# grafique os pontos com separação (jitter)
-# coloque títulos nos eixos e principal
-# deixe os boxplot na horizontal
-# adicione um tema a sua escolha
+# Solução Exercício 02
 ggplot(mpg, aes(drv, cty))                + 
   geom_boxplot()                          +
     geom_jitter(width = 0.2, alpha=0.4)   +
@@ -290,12 +293,18 @@ ggplot(diamonds, aes(price, colour = cut)) +
 
 ---
 
-####**_<span style="color:blue">EXERCICIO</span>_**
+####**_<span style="color:blue">Exercício 03</span>_**
 
+####**_<span style="color:blue">Usando a base de dados "iris", faça o histograma da variável Sepal.Length e dando cor separado por espécies e um tema de fundo tipo classico</span>_**
+
+---
+
+**Solução**
+
+---
 
 ```{r aed2_aluno03}
-# Usando a base de dados "iris", faça o histograma da variável Sepal.Length e dando cor separado por espécies e um tema de fundo tipo classico
-
+# Solução Exercício 03
 ggplot(iris, aes(Sepal.Length, fill = Species))              +
   geom_histogram()                            +
       theme_classic()
@@ -335,15 +344,26 @@ graf4 +
 
 ---
 
-####**_<span style="color:blue">EXERCICIO</span>_**
+####**_<span style="color:blue">Exercício 04 </span>_**
 
+####**_<span style="color:blue">Usando "graf4":</span>_** 
+
+####**_<span style="color:blue">1- desenhar linhas horizontais em 30, 25, 20 e 15, de cor azul</span>_**
+
+####**_<span style="color:blue">2- desenhar uma linha vertical de valor 3, na cor vermelha e largura 1.2</span>_**
+
+####**_<span style="color:blue">3- adicione legendas nos eixos e titulo principal a sua escolha</span>_**
+
+####**_<span style="color:blue">4- finalmente um tema light...</span>_**
+
+---
+
+**Solução**
+
+---
 
 ```{r aed2_aluno04}
-# Usando "graf4", 
-# desenhar linhas horizontais em 30, 25, 20 e 15, de cor azul
-# desenhar uma linha vertical de valor 3, na cor vermelha e largura 1.2
-# adicione legendas nos eixos e titulo principal a sua escolha
-# finalmente um tema light...
+# Solução Exercício 04
 graf4                                                     + 
   geom_vline(xintercept = 3, size = 1.2, col = "red")     + # + camada com várias linhas verticais 
     geom_hline(yintercept = c(15,20,25,30), col = "blue") + # + camada com linha horizontal
@@ -378,8 +398,9 @@ graf4 + geom_abline(intercept = coeficientes[1], slope = coeficientes[2], col = 
 graf4 + geom_smooth(method = "lm", se = FALSE)
 ```
 
+---
 
-#### **_<span style="color:blue">compare os dois gráficos, porquê são levemente diferentes?</span>_**.
+#### **_<span style="color:blue">Exercício 05. compare os dois gráficos, porquê são levemente diferentes?</span>_**.
 
 ---
 
@@ -524,12 +545,16 @@ ggplot(data = df5, aes(x = xq, y = hwy))  +
 
 ---
 
-```{r aed2_aluno05}
-# Exercício
-# Analisar o rendimento em cidade dos carros, baseado no tipo de carro e combustível usado
-# Solução:
+#### **_<span style="color:blue">Exercício 06.Analisar o rendimento em cidade dos carros, baseado no tipo de carro e combustível usado. Dica: a função _qqnorm_data_, já foi criada no gráfico anterior.</span>_**
 
-# agrupa os dados por categorias e aplica a função
+---
+
+**Solução**
+
+---
+
+```{r aed2_aluno05}
+# Solução: Exercício 06
 df5 <- mpg %>%
   group_by(class, fl) %>%
       do(with(., qqnorm_data(cty)))
