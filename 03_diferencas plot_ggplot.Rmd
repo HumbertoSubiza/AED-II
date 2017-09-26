@@ -1,0 +1,110 @@
+---
+title: 
+author:
+date: 
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+old.par <- par(no.readonly = TRUE)
+```
+
+## Diferenças entre plot() e ggplot()
+
+Enquanto a função _plot()_ do pacote base do R atende as principais necessidades da exploração inicial de dados e até permite a geração de gráficos de boa qualidade, algumas limitações fizeram com que surgissem outros pacotes gráficos, com diferentes focos e tratamento de dados. 
+
+O pacote _ggplot2_ incluido no conjunto de pacotes _tidyverse_ vem se destacando por su facilidade e qualidade final dos gráficos. 
+
+Nesta pequena introdução vamos salientar apenas algumas das principais diferenças entre ambos, que fazem que cada um seja mais adequado para a geração de gráficos nas etapas do AED.
+
+Usando o conjunto de dados iris, vamos ver como seria um gráfico mínimo com plot
+
+---
+
+```{r}
+iris <- iris[c(5, 1:4)] # simples reordenamento das variáveis
+str(iris)
+
+plot(iris$Sepal.Width ~ iris$Sepal.Length) # gráfico com indicação tipo fórmula "~"
+
+```
+
+---
+
+E no caso de desejar adicionar no mesmo gráfico um outro conjunto de pontos presente nos meus dados?
+
+---
+
+```{r}
+# primeiro gráfico...
+plot(iris$Sepal.Width ~ iris$Sepal.Length) # gráfico com indicação tipo fórmula "~"
+
+# segundo gráfico, adiciono uma nova camada usando a função "points" e uma cor diferente
+points(iris$Petal.Length, iris$Petal.Width, col = "red")
+
+```
+
+---
+
+Quais limitações ou problemas encontramos aqui?
+
+1- o espaço gráfico não é redimensionado para mostrar todo a segunda camada gráfica;
+
+2- o gráfico é desenhado como uma imagen estática;
+
+3- no existe um marco único para a plotagem dos gráficos.
+
+Vejamos agora o mesmo gráfico com ggplot...
+
+---
+
+```{r iris}
+library(ggplot2)
+# objeto ggplot
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
+# camada adicionada de pontos
+    geom_point()                                     +
+# segunda camada adicionada                 
+    geom_point(aes(x = Petal.Length, y = Petal.Width), col = "red")             
+                 
+```
+
+---
+
+Diferenças: o espaço gráfico é automaticamente ajustado com cada nova camada adicionada e
+
+a função ggplot produz um objeto em R, chamado de "objeto ggplot", que pode ser chamado para modificações posteriores. Exemplos, vamos criar um objeto ggplot chamado "gplot":
+
+---
+
+```{r}
+# crio o objeto gplot...
+gplot <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width))
+
+# adiciono uma camada de pontos ao objeto
+gplot + geom_point()
+
+# adiciono uma camada e salvo como outro objeto ggplot, de nome "p"
+p <- gplot + geom_jitter()
+
+# chamo ou grafico "p"
+p
+
+
+```
+
+
+---
+
+FIM DA APRESENTAÇÃO
+
+---
+
+```{r}
+sessionInfo()
+
+
+
+

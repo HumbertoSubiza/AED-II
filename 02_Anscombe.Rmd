@@ -1,0 +1,93 @@
+---
+title: "Regressão linear simples do quarteto de dados de Anscombe"
+author: "Walter Humberto Subiza Pina"
+date: "12 de janeiro de 2017"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+require(stats) 
+require(graphics)
+```
+
+Vamos fazer uso do pacote do R _datasets_, que tem um conjunto de dados apresentado em 1973 pelo estatístico Francis Anscombe.
+
+```{r}
+str(anscombe)
+```
+
+---
+
+Feita a regressão linear "y ~ x" do conjunto, os resultados são os seguintes
+
+```{r echo=FALSE}
+
+##-- Fazer as regressões em conjunto
+# objeto de classe "formula"
+ff <- y ~ x ## objeto de classe "formula"
+# lista contendo lm1:int1...
+mods <- setNames(as.list(1:4), paste0("lm", 1:4))
+# função for para cálculo da regressão simultânea
+for(i in 1:4) {
+   ff[2:3] <- lapply(paste0(c("y", "x"), i), as.name)
+   mods[[i]] <- lmi <- lm(ff, data = anscombe)
+  print(anova(lmi))
+}
+```
+
+**Note que numericamente são bem semelhantes!!**
+
+```{r}
+## ver que numericamente são bem semelhantes!!
+sapply(mods, coef)
+
+lapply(mods, function(fm) coef(summary(fm)))
+```
+
+---
+
+### gráfico
+
+Finalmente vamos ver a cara dos dados:
+
+---
+
+```{r echo=FALSE}
+op <- par(mfrow = c(2, 2), 
+          mar   = 0.1 + c(4,4,1,1), 
+          oma   =  c(0, 0, 2, 0))
+
+for(i in 1:4) {
+  ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)
+  plot(ff, 
+       data = anscombe, 
+       col  = "red", 
+       pch  = 21, 
+       bg   = "orange", 
+       cex  = 1.2,
+       xlim = c(3, 19), 
+       ylim = c(3, 13))
+  abline(mods[[i]], col = "blue")
+}
+mtext("Regressão dos quatro conjuntos de dados de Anscombe", 
+      outer = TRUE, 
+      cex   = 1.5)
+```
+
+---
+
+Fontes e Referências:
+
+_Tufte, Edward R. (1989) The Visual Display of Quantitative Information, 13–14. Graphics Press._
+
+_Anscombe, Francis J. (1973) Graphs in statistical analysis. American Statistician, 27, 17–21._
+
+---
+
+FIM Dados  ANSCOMBE
+
+Esse trabalho é parte da Oficia AED - Parte II - 2017
+
+---
