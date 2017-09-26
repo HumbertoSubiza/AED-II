@@ -1,0 +1,214 @@
+---
+title: "Oficina AED - Parte II"
+author: "Walter Humberto Subiza Pina"
+date: "21 de setembro de 2017"
+output: html_document
+---
+
+```{r setup_bibl, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Anexo GGPLOT2 - dicas várias
+
+#### Reordenamento de variáveis categóricas
+ 
+ Nos gráficos que incluem variáveis categóricas, as mesmas são apresentadas na ordem em que aparecem nos dados. Por exemplo, nos dados **iris**, as espécies (variável _Species_)  aparecem na ordem: setosa, versicolor e virginica. Um histograma fatorizado por essa variável seria:
+ 
+```{r ggplot01, fig.align='center'}
+
+ggplot(iris, aes(x = Sepal.Length)) +  
+ geom_bar()                         +
+  facet_grid(. ~  Species)
+```
+
+Supondo que deseje-se apresentar o gráfico com uma ordem  dos fatores diferente, por exemplo: virginica, versicolor e finalmente setosa. 
+
+Para reordenar os fatores podemos usar a própria função _factor_, especificando os níveis em forma manual dentro do argumento ou atráves de uma variável como será feito no seguinte gráfico.
+
+
+```{r ggplot02, fig.align='center'}
+# crio a variável "fatores" com a ordem desejada
+fatores <- c("virginica", "versicolor", "setosa")
+# ordeno os dados pelos fatores definidos
+iris$Species <- factor(iris$Species, levels= fatores)
+# gráfico
+ggplot(iris, aes(x = Sepal.Length)) +  
+ geom_bar()                         +
+  facet_grid(. ~  Species)
+```
+
+Na sequência apresentam-se exemplos em que o reordenamento acontece tanto para variáveis categóricas como numéricas.
+
+```{r ggplot03, fig.align='center'}
+# nossos dados
+df <- data.frame(Estado = c("SP", "GO", "PE", "AL","RJ"), 
+                 Prod   = c(60.8, 43.2, 19.1,22.6, 45.6))
+ 
+# guardamos nosso gráfico básico
+g <- ggplot(df, aes(x = Estado, y = Prod)) 
+
+# variaveis ordenadas por ordem alfabetica
+g + geom_bar(aes(x = Estado), stat = "identity")                 +
+     labs(title = "Ordem alfabética")                            +
+      geom_text(aes(label = Prod), vjust = 1.5, colour = "white")
+ 
+# reordenamento de variáveis para que apareçam na ordem dos dados
+# gráfico do novo reordenamento
+g + geom_bar(aes(x = factor(df$Estado, as.character(df$Estado))), 
+             data  = df, 
+             stat  = "identity")                                 +
+     labs(title = "Ordem dos dados")                             +
+      geom_text(aes(label = Prod), vjust = 1.5, colour = "white")
+
+# reordenamento acorde variável Prod, na ordem crescente
+g + geom_bar(aes(x = reorder(df$Estado, df$Prod)), 
+             data  = df, 
+             stat  = "identity")                               +
+  labs(title = "Ordem numérica crescente acorde Prod")         +
+   geom_text(aes(label = Prod), vjust = 1.5, colour = "white")
+```
+
+---
+
+Uma biblioteca muito útil quando trabalhamos com fatores é **forcats**. Ela pertence ao grupo **tidyverse** e possui numerosas funções que facilitam  a conversão, contagem, ordenamento de fatores, entre muitas outras. Veja **?forcats**.
+
+Na sequência serão reproduzidos os exemplos anteriores usando **forcats**. 
+
+Ordenamento por ordem de aparição, usando o argumento **fct_inorder**:
+
+```{r ggplot04, fig.align='center'}
+library(forcats)
+g <- ggplot(df, aes(x = Estado, y = Prod))                          +
+       geom_bar(stat = "identity")                                  +
+        geom_text(aes(label = Prod), vjust = 1.5, colour = "white")
+
+g + aes(x = fct_inorder(Estado))    +
+   labs(title = "Ordem de aparição") 
+```
+
+
+Os fatores como apresentado, são colocados pela ordem de aparição nos dados. O uso de **fct_inorder()**, nos evitou ter de criar novos fatores como no exemplo mais acima foi feito, assim sendo os dados permanecem intocados
+
+Reordenamento dos fatores, de acordo com uma outra variáve. No caso seguinte os níveis de _Estado_ serão ordenados pela variável _Prod_, usando a funcção **fct_reorder**.
+
+
+```{r ggplot05, fig.align='center'}
+g + aes(x = fct_reorder(Estado, Prod)) +
+   labs(title = "Ordem crescente de Prod") 
+```
+
+Para invertir a ordem basta fazer:
+
+```{r ggplot06, fig.align='center'}
+g + aes(x = fct_reorder(Estado, Prod, .desc = TRUE)) +
+   labs(title = "Ordem decrescente de Prod")
+```
+
+---
+
+#### Temas
+
+Além dos temas já pre-definidos no pacote, podem-se criar, modificar e reusar temas personalizados.
+
+Vamos começar com um gráfico padrão por fatores e na sequência vamos eliminar todos os elementos gráficos, ou seja linhas, textos, formas retas e ainda legendas.
+
+
+```{r, ggplot07, fig.align='center', message = FALSE}
+iris_wide <- read_csv("~/Oficina AED com R-II 2017/ggplot II/iris.wide.txt")
+
+# gráfico padrão
+gplot <- ggplot(iris_wide, aes(Length, Width, color = Part)) +
+                  geom_point()                               +
+                   facet_grid(. ~ Species)
+gplot
+
+# gráfico sem nenhum elemento
+gplot + theme(text = element_blank(),
+              line = element_blank(),
+              rect = element_blank(),
+              legend.position = "none")
+```
+
+---
+
+#### Elemento **rect**
+
+Este elemento refere-se a todas as formas geometricas do gráfico, como bordas, fundo, etc. O elemento mais simples é o fundo do gráfico, com o argumento **fill = ** controla-se o preenchimento do fundo, com **color = ** e **size = ** controla-se o tamanho e a cor da borda exterior do gráfico. No exemplo seguinte vamos colocar um tom personalizado no fundo e uma borda preta de tamanho 1.
+
+```{r, ggplot08, fig.align='center'}
+cor <- c("#FFFFE0")
+gplot +  theme(plot.background = element_rect(fill = cor, color = "black", size = 1))
+```
+
+---
+
+No exemplo a seguir eliminam-se as linhas das grades dos eixos e a cor exterior ao gráfico, ficando apenas o fundo escolhido no interior da parte gráfica. As opções do tema são salvas num objeto _ggplot_ e aplicadas depois no gráfico já construído.
+
+---
+
+```{r ggplot09, fig.align='center'}
+panel.01 <-  theme(panel.background  = element_rect(fill = cor, color = "black", size = 1), 
+                      legend.key        = element_blank(), 
+                      legend.background = element_blank(), 
+                      strip.background  = element_blank())
+
+gplot + panel.01
+```
+
+
+#### Linhas
+
+Neste grafico vamos manter os eixos na cor preta e eliminar a grade dos mesmos.
+
+```{r ggplot10, fig.align='center'}
+gplot+ panel.01 + 
+  theme(panel.grid = element_blank(), 
+        axis.line  = element_line(color ="black"), 
+        axis.ticks = element_line(color ="black"))
+```
+
+#### Texto
+
+Finalmente no gráfico anterior vamos adicionar alguns elementos de texto.
+
+---
+
+```{r ggplot11, fig.align='center'}
+minhacor <-  c("#99000D")
+ 
+gplot + panel.01 +
+         theme(panel.grid = element_blank(), 
+              axis.line  = element_line(color ="black"), 
+              axis.ticks = element_line(color ="black")) +
+          theme(strip.text   = element_text(size  = 16, color       = minhacor),
+                axis.title.y = element_text(color = minhacor, hjust = 0, face = "italic"),
+                axis.title.x = element_text(color = minhacor, hjust = 0, face = "italic"),
+                axis.text    = element_text(color = "black"))
+```
+
+---
+
+Uma das grandes vantagens do uso do **ggplot** eh a possibilidade de guardar e reusar ou modificar temas, como visto com o uso de _panel.01_. 
+
+Essa vantagem é interessante quando queremos definir um padrão de gráficos para geração automática de relatórios ou apresentações. Na sequência salvamos todos os elementos já usados como um padrão novo chamado _panel.02_.
+
+
+```{r ggplot12, fig.align='center'}
+panel.02 <- panel.01 +
+         theme(panel.grid = element_blank(), 
+              axis.line  = element_line(color ="black"), 
+              axis.ticks = element_line(color ="black")) +
+          theme(strip.text   = element_text(size  = 16, color       = minhacor),
+                axis.title.y = element_text(color = minhacor, hjust = 0, face = "italic"),
+                axis.title.x = element_text(color = minhacor, hjust = 0, face = "italic"),
+                axis.text    = element_text(color = "black"))
+
+gplot + panel.02
+```
+
+
+---
+
+FIM ANEXO 01 GGPLOT
