@@ -1,0 +1,519 @@
+---
+title: "Anexo Plot 1"
+author: "WHSP"
+date: "4 de julho de 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dicas extras de Plot
+
+Os exemplos seguintes são extraídos e ou parcialmente modificados, da ajuda de cada função ou pacote em _R_, assim como do site de código aberto <http://www.r-tutor.com/elementary-statistics>.
+
+Nos exercícios a seguir, toda instrução que tenha a 
+
+#### **_<span style="color:blue">seguinte formatação</span>_**
+
+é para sua execução no fragmento de código R que segue ou na consola do RStudio (janela 3).
+
+---
+
+### Configurações de parâmetros gráficos 
+
+####(veja "How big is Your Graph" Cheat Sheet na documentação)
+
+Se desejamos ver todas as configurações gráficas que o R tem por padrâo, podemos usar:
+
+  par()
+  
+É importante quando trabalhamos com gráficos, guardar as configurações padrão, já que cada modificação de parâmetros afeta os gráficos seguintes. Por exemplo, se configuramos a janela para dois gráficos lado a lado, essa configuração vai permanecer nos próximos gráficos, ainda que seja ejecutado apenas um gráfico. 
+
+Uma forma de guardar os parâmetros é assigna-los a uma variável:
+
+
+```{r salva_par}
+pgra <- par()
+```
+
+Os parâmetros salvados são 72, alguns de muito interesse, como:
+
+  - bg: cor de fundo dos gráficos
+  
+  - mar: margem do gráfico para as bordas da janela gráfica em cm
+  
+  - mai: margem do gráfico para as bordas da janela gráfica em polegadas
+  
+  - mfrow: quantos gráficos e sua distribuição na janela gráfica
+  
+  - pty: força ter eixos de igual comprimento
+  
+  - las: orientação das marcas de escala em referência aos eixos
+  -...
+  
+Também podemos retornar aos valores padrão através do comando
+
+**par("default")**
+  
+O seguinte exemplo vai criar três gráficos numa janela de quatro posições.
+
+```{r plot01, fig.height=6 , fig.width=5, fig.align='center'}
+# Definição do espaço gráfico como matriz de 2 x 2 (quatro gráficos)
+# os gráficos serão colocados por linha
+par(mfrow = c(2, 2))
+
+# primeiro gráfico
+plot(mtcars$mpg, mtcars$hp)
+
+# segundo gráfico
+hist(mtcars$hp)
+# terceiro gráfico
+# 
+boxplot(mtcars$disp)
+
+# o quarto espaço fica livre 
+```
+
+---
+
+Quando desejamos uma janela mais complexa, é melhor usar a função layout().
+
+vamos criar um gráfico diferente com os mesmos elementos do gráfico anterior;
+
+```{r plot02, fig.height=7 , fig.width=5, fig.align='center'}
+# criamos uma matriz de 4 elementos, ordenados em duas linhas e duas colunas
+
+matriz <- matrix(c(1, 1, 3, 2), 2, 2, byrow = TRUE)
+matriz # mostra a matriz
+
+# cria o espaço gráfico usando a matriz criada e especificanco 
+# largura e altura de cada gráfico
+layout(matriz, widths  = c(2, 4), heights = c(2, 2))
+
+# plotagem dos gráficos, note que o espaço gráfico é totalmente preenchido
+plot(mtcars$mpg, mtcars$hp, col = "red", pch = 19) # grafico 1 na posição (1,1) e (2,1)
+hist(mtcars$hp, col = rainbow(6))                  # gráfico 2, posição  2,2
+boxplot(mtcars$disp, col = "blue")                 # gráfico 3, posições 2,1
+```
+
+---
+
+#### Texto em gráficos
+
+Vamos ver o eso de _mtext()_ para colocar texto no gráfico **fora da área gráfica**. Também é possível
+usar _text()_ para inserir texto fora da área gráfica quando definimos _par (xpd = T)_.
+
+No exemplo vamos criar um gráfico de torta com os dados populacionais do último
+censo e adicionar texto com função _mtext()_.
+
+```{r plot03, fig.height=7 , fig.width=8, fig.align='center'}
+# criamos um vetor com os dados e os nomes das variáveis
+pop <- c (79, 94.2, 14.6)
+names (pop) <- c (" 0 a 18", "18 a 50", " > 50") 
+
+#gráfico de torta com título
+pie(pop, 
+    col    = rainbow(3), 
+    main   = "Brasil - Censo demográfico ano 2000 (IBGE, 2017)",
+    cex.main    = 1.5,
+    labels = paste(pop, "milhões")) 
+# legenda
+legend ("topright", 
+        fill   = rainbow(3), 
+        legend = names(pop))
+
+# Três textos no lado 1, veja as linhas e o ajustamento de cada uma 
+mtext ("No lado = 1, linha = 1 ...", 
+       side = 1, 
+       line = 1, 
+       col  = "brown4") 
+
+mtext ("No lado = 1 ,linha = 0, adj = 0 ...", 
+       side = 1, 
+       line = 0, 
+       adj  = 0, 
+       col  = "brown4") 
+
+mtext ("No lado = 1, linha = 1.5, adj = 1 ...", 
+       side = 1, 
+       line = 1.5, 
+       adj  = 1, 
+       col  = "brown4") 
+
+#Três textos no lado 2, veja as linhas e o ajustamento de cada uma 
+mtext ("No lado = 2, linha = 0 ...",  
+       side = 2,  
+       line = 0, 
+       col  = "chartreuse4") 
+
+mtext ("No lado = 2, linha = 1, adj =0 ...", 
+       side = 2, 
+       line = 1, 
+       adj  = 0, 
+       col  = "chartreuse4") 
+
+mtext ("No lado = 2, linha = 2, adj =1 ...", 
+       side = 2, 
+       line = 2, 
+       adj  = 1, 
+       col  = "chartreuse4") 
+
+# Três textos no lado 3, veja as linhas e o ajustamento de cada uma  
+mtext ("No lado = 3, linha = -2", 
+       side =  3, 
+       line = -2, 
+       col  = "darkorchid4")
+
+mtext ("No lado = 3, linha = -1, adj = 0 ...", 
+       side =  3, 
+       line = -1, 
+       adj  =  0, 
+       col  = "darkorchid4") 
+
+mtext ("No lado = 3, linha = 0.5, adj = 1 ...", 
+       side = 3, 
+       line = 0.5, 
+       adj  = 1, 
+       col  = "darkorchid4")
+
+#Três textos no lado 4, veja as linhas e o ajustamento de cada uma 
+mtext ("No lado = 4, linha = -1.5",  
+       side = 4, 
+       line = -1.5, 
+       col  = "blue") 
+
+mtext ("No lado = 4, linha = 1, adj = 0 ...", 
+       side = 4, 
+       line = 1, 
+       adj  = 0, 
+       col  = "blue") 
+
+mtext ("No lado = 4, linha =  0, adj = 1 ...", 
+       side = 4, 
+       line = 0, 
+       adj  = 1, 
+       col  = "blue")
+
+# Esta última linha coloca 15 letras na posição determinada por "at" desde o valor -1.4 em intervalos de 0.2 na margem baixa do gráfico
+
+mtext (letters [1:15], 
+       side = 1, 
+       line = 3, 
+       at   = seq(-1.4, 1.4, 0.2), 
+       col  = "darkgreen", 
+       cex  = 2)
+```
+
+---
+
+####Gráfico de barras, variáveis qualitativas
+
+```{r plot04, fig.width=10, fig.align='center'}
+par(mfrow = c(1,2))
+# calcula a tabela de frequências
+marchas <-  table(mtcars$gear)
+# aplica a função barplot para o gráfico
+barplot(marchas,
+        ylim = c(0,20),
+        main = "Distribuição por tipo de marchas(quantidade)") 
+
+# calculo das frequências relativas, a partir de uma tabela!!
+marchas.prop <-  prop.table(marchas)
+
+# aplica a função barplot para o gráfico
+barplot(marchas.prop,
+                ylim = c(0,0.5),
+                main = "Distribuição por tipo de marchas (proporção)") 
+```
+
+---
+
+**_<span style="color:blue">Exercício 01</span>_**
+
+1 - Com o dataset **mtcars**, faça uma tabela cruzada entre tipos de marcha ( _gear_) e tipos de transmissão ( _am_), salve como **gear_am**. Visualize o resultado.
+
+2 - Defina uma janela gráfica com dois gráficos lado a lado.
+
+3 - Defina uma paleta de cores com c("red", "blue", "green")
+
+3 - Use plot() para graficar *gear_am*
+
+4 - Use barplot() para graficar o mesmo objeto.
+
+5 - Interprete com base na tabela, que informação fornece cada um 
+
+
+```{r plot05, fig.align='center'}
+am_gear <- table( mtcars$am,mtcars$gear)
+am_gear 
+
+par(mfrow = c(1,2))
+cores <- c("red", "blue", "green")
+plot(am_gear , col = cores)
+
+barplot(am_gear , col = cores, ylim = c(0,16))
+```
+
+---
+
+# Histograma, variáveis quantitativas
+
+Um histograma é nada mais que um gráfico de barras que apresenta uma frequência de uma distribuição de variáveis contínuas, o comprimento de cada barras é igual ao número ou frequência relativa de elementos em cada classe.
+
+---
+
+```{r plot06, fig.align='center'}
+library(RColorBrewer)
+
+qsec <- mtcars$qsec
+# criando uma paleta de cores divergentes, ver ?RcolorBrewer
+colors <- brewer.pal(9,"BrBG")
+
+# histograma
+hist(qsec,
+      xlim = c(12,24),
+      main = "Histograma de velocidade em 400 m ",
+      xlab = "Tempo em segundos",
+      ylab = "Frequência",
+      col  = colors)
+```
+
+---
+
+**_<span style="color:blue">Exercicio 02</span>_**
+
+1 - Refaça o gráfico anterior com as probabilidades no eixo Y, veja a ajuda ?hist;
+
+2 - Adicione uma linha tracejada de densidades com espesura 1.5, na cor preta;
+
+3 - Adicione uma linha de observações (*rug*) de tamanho 2.
+
+```{r plot07, fig.align='center'}
+hist(qsec,
+      xlim = c(12,24),
+      main = "Histograma de velocidade em 400 m ",
+      xlab = "Tempo em segundos",
+      ylab = "Probabilidade",
+      col  = colors,
+      probability = T)
+
+lines(density(qsec), 
+      lwd = 2.5, 
+      lty = "dashed")
+
+rug(qsec, lwd = 2)
+```
+
+---
+
+#### Incluyendo números encima das barras do histograma
+
+O seguinte exemplo é do anexo **_R_compendium of graphics_**, com algumas modificações estéticas, veja na pasta de trabalho.
+
+```{r plot08, fig.height=6, fig.align='center'}
+library(plyr) #biblioteca necessária para a função l_ply
+
+# definindo parâmetros gráficos
+par(cex.main = 1.5, 
+    mar      = c(5, 6, 4, 5) + 0.1, 
+    mgp      = c(3.5, 1, 0), 
+    cex.lab  = 1.5,
+    font.lab = 2, 
+    cex.axis = 1.3, 
+    bty      = "n", 
+    las      = 1)
+
+yhigh <- 0.35
+x_lim <- c(seq(14, 24, 2))
+
+# histograma, cálculo de probabilidades
+h <- hist(qsec, 
+          probability = T, 
+          main = "", 
+          xlab = "", 
+          ylab = "", 
+          ylim = c(0, yhigh), 
+          xlim = c(min(x_lim),max(x_lim)), 
+          axes = FALSE, 
+          col  = "grey")
+#função que coloca as probabilidades encima das barras do histograma, altura dos
+# números está controlada o número 0.022
+l_ply(seq_along(h$density), 
+      function(x) text(h$mids[x], h$density[x] + 0.022, round(h$density[x], 2), 
+                       cex = 1.2,
+                       col = "blue"))
+# eixo x, apenas com a escala
+axis(1, x_lim)
+
+# eixo Y eliminado
+#axis(2, labels = FALSE, lwd.ticks = 0)
+
+# observações
+rug(qsec, lwd = 2)
+
+# texto do eixo X
+mtext("Histograma de velocidade com probabilidade", 
+      side = 3, 
+      line = 1, 
+      cex  = 1.5, 
+      font = 2)
+```
+
+
+#### Histograma de frequência acumulada
+
+Um histograma de frequência acumulada é o total acumulado de todas as classes anteriores, até uma determinada classe. Pode ser a frequência absoluta, quando inclue todas as classes da amostra, ou acumulada relativa até uma classe determinada.
+
+No R temos a função **ecdf()** que calcula a função de distribuição acumulada empírica. O resultado é um objeto que pode ser graficado diretamente com a função **plot()**.
+
+No exemplo seguinte, vamos usar a base de dados "faithful"  e função mencionada, para produzir um gráfico de histograma  acumulada do tempo de espera entre erupções do geyser.
+
+```{r plot09, fig.align='center'}
+intervalo = faithful$eruptions
+
+F_ac = ecdf(intervalo) 
+
+plot(F_ac, 
+     col.01line = "red", 
+     pch        = 20,
+     main       = "Erupções do Old Faithful", 
+     xlab       = "Duração em minutos", 
+     ylab       = "Frequência acumulada")
+```
+
+---
+
+
+#### para plotar gráficos com grande número de dados ( _veja ?smoothScatter_) :
+
+```{r plot10, fig.align='center', fig.height=10, fig.width=10}
+# Dados:
+# criação de uma matriz de duas variáveis com centro e dispersão diferente
+# a matriz terá 2000 valores
+n <- 2000
+d1  <- matrix(rnorm(n), ncol = 2) # primeria matriz, normal
+d2  <- matrix(rnorm(n,  mean = 3, sd = 1.5), ncol = 2) # segunda matriz
+d   <- rbind(d1, d2) # combinação das duas
+
+# parâmetros do ambiente gráfico
+oldpar <- par(mfrow = c(2, 2), mar=.1+c(3,3,1,1), mgp = c(1.5, 0.5, 0))
+
+# primeiro gráfico, nenhum ponto sobreposto (jitter)
+smoothScatter(d, nrpoints = 0)
+
+# segundo gráfico, dados na posição correta
+smoothScatter(d)
+
+# esquema de cores predeterminado
+Lab.palette <- colorRampPalette(c("blue", "orange", "red"), space = "Lab")
+i.s <- smoothScatter(d, colramp = Lab.palette,
+                     ## pch=NA: si usado não grafica
+                     nrpoints = 250, ret.selection=TRUE)
+
+# identifica os 10 pontos com mais baixa densidade como outliers
+i.10 <- i.s[1:10]
+
+# coloca os números dos pontos
+text(d[i.10,], labels = i.10, cex= 0.75)
+
+## algo semelhante mas menos eficiente em termos gráficos para grande número de dados
+plot(d, col = densCols(d), pch = 20)
+
+```
+
+---
+
+**_<span style="color:blue">Exercicio 03</span>_**
+
+1 - Refaça o exemplo anterior com 10000 pontos;
+
+2 - Grafique os 20 valores mais extremos (outliers)
+
+---
+
+**Solução**
+
+```{r plot11, fig.align='center', fig.height=10, fig.width=10}
+# Sua solução
+# Dados:
+# criação de uma matriz de duas variáveis com centro e dispersão diferente
+# a matriz terá 2000 valores
+n <- 10000
+d1  <- matrix(rnorm(n), ncol = 2) # primeria matriz, normal
+d2  <- matrix(rnorm(n,  mean = 3, sd = 1.5), ncol = 2) # segunda matriz
+d   <- rbind(d1, d2) # combinação das duas
+
+# parâmetros do ambiente gráfico
+oldpar <- par(mfrow = c(2, 2), mar=.1+c(3,3,1,1), mgp = c(1.5, 0.5, 0))
+
+# primeiro gráfico, nenhum ponto sobreposto (jitter)
+smoothScatter(d, nrpoints = 0)
+
+# segundo gráfico, dados na posição correta
+smoothScatter(d)
+
+# esquema de cores predeterminado
+Lab.palette <- colorRampPalette(c("blue", "orange", "red"), space = "Lab")
+i.s <- smoothScatter(d, colramp = Lab.palette,
+                     ## pch=NA: si usado não grafica
+                     nrpoints = 250, ret.selection=TRUE)
+
+# identifica os 10 pontos com mais baixa densidade como outliers
+i.20 <- i.s[1:20]
+
+# coloca os números dos pontos
+text(d[i.20,], labels = i.20, cex= 0.75)
+
+## algo semelhante mas menos eficiente em termos gráficos para grande número de dados
+plot(d, col = densCols(d), pch = 20)
+ 
+```
+
+---
+
+#### Gráfico de dispersão tipo "girasol"
+
+Este tipo de gráfico, pouco usado, apresenta os pontos que se sobrepõem como tipo girasol com diversas folhas, e o número  delas está em relação à quantidade de pontos sobrepostos. 
+
+Assim sendo evita que pontos fiquem escondidos e possan ser visualizados sem ter de recorrer ao método _jitter_ que desloca o ponto da sua posição original.
+
+---
+
+```{r plot12,  fig.align='center', fig.height=10, fig.width=10}
+require(grDevices)
+par(mfrow = c(2,2))
+
+## 'number' is computed automatically:
+
+sunflowerplot(iris[, 3:4],
+              main = "Girasol 'iris' ")
+
+set.seed(1234)
+sunflowerplot(y = (2*round(rnorm(100))), x = round(rnorm(100), 0),
+              main = "Girasol distribuição N(0,1)",
+              xlim = c(-3, 3))
+## Similarly using a "xyTable" argument:
+xyT <- xyTable(y = (2*round(rnorm(100))), x = round(rnorm(100), 0),
+               digits = 3)
+utils::str(xyT, vec.len = 20)
+
+sunflowerplot(xyT, main = "Segundo girasol N(0,1)",
+              xlim = c(-3, 3))
+
+## A 'marked point process' {explicit 'number' argument}:
+sunflowerplot(rnorm(100), rnorm(100), number = rpois(n = 100, lambda = 2),
+              main = "Girasol (processo ponto marcado explicitamente)",
+              rotate = TRUE, col = "blue4", pch = 21)
+```
+
+---
+
+FIM DAS EXTRAS
+
+---
+
+```{r}
+sessionInfo()
+```
