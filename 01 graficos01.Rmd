@@ -49,7 +49,7 @@ Vejamos o exemplo, usando o conjunto de dados "cars":
 
 ---
 
-```{r plot01, fig.align='center'}
+```{r plot01, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
 head(cars)
 plot(cars$dist)
 ```
@@ -60,7 +60,7 @@ Quando desejamos um gráfico de duas variáveis (uma explicatória ou independen
 
 ---
 
-```{r plot02, fig.align='center'}
+```{r plot02, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
 plot(cars$speed, cars$dist)
 ```
 
@@ -76,7 +76,7 @@ Veja o seguinte exemplo com os dados do conjunto de dados **iris**:
 
 ---
 
-```{r iris_plot03}
+```{r iris_plot03, fig.path='figuras/', fig.ext='jpeg'}
 str(iris)
 par(mfrow = c(2, 2), pty = "s")
 
@@ -213,7 +213,7 @@ Note o uso de “\n” no título principal para quebrar a legenda em dois parâ
 ---
 
 
-```{r plot07, fig.align='center'}
+```{r plot07, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
 hist(iris$Sepal.Width,
      probability = T,
      breaks      = 10,
@@ -269,7 +269,7 @@ Para ter categorias em número diferentes, vamos usar a base de dados _mtcars_ e
 
 ---
 
-```{r plot09, fig.align='center'}
+```{r plot09, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
 tab <- table (mtcars$gear)
 tab
 # Configurando o espaço gráfico para dois gráficos na mesma linha
@@ -296,7 +296,7 @@ tipo de carro. Na sequência, vamos plotar dois gráficos: barras com  _barplot(
 
 ---
 
-```{r plot10, fig.align='center'}
+```{r plot10, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
 # Carrega o pacote insuranceData
 library(insuranceData)
 
