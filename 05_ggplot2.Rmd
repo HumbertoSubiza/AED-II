@@ -18,11 +18,11 @@ library(tidyverse)
 
 ---
 
-Alguns parâmetros estéticos permitem ser modificados para uma melhor representação.
+Alguns parâmetros estéticos permitem modificações para uma melhor representação.
 
-Referente à posição dos elementos gráficos, o padrão de posicionamento é "identity", ou seja os elementos serão colocados na sua correta posição, mapeada pelas variáveis respectivas.
+No que se refere à posição dos elementos gráficos, o padrão de posicionamento é "identity", ou seja os elementos serão colocados na sua correta posição, mapeada pelas respectivas variáveis .
 
-Porém, já vimos o efeito "jitter" na posição, quando queremos visualizar elementos sobrepostos parcial ou totalmente. 
+Já vimos, porém,  o efeito "jitter" na posição, quando queremos visualizar elementos sobrepostos parcial ou totalmente. 
 
 A separação no caso dos pontos pode ser especificamente determinada através da função **position_jitter**, veja o seguinte exemplo:
 
@@ -36,13 +36,13 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
 ```
 
 
-Em relação à posição, com gráficos de barras já vimos que podemos colocarlas lado a lado ou empilhadas, ou seja "dodge" ou "stack", ou ainda mudar a posição dos eixos com "coord_flip()".
+Com relação à posição, com gráficos de barras já vimos que podemos colocá-las lado a lado ou empilhadas, ou seja "dodge" ou "stack", ou ainda mudar a posição dos eixos com "coord_flip()".
 
 ---
 
 #### Escalas
 
-Existem diversas funções de escala, vamos mostrar duas interessantes e muito usadas, elas são a que determina a apariência das escalas em ambos eixos, "x" e "y" e a que controla a escala de cores, colocando nomes nas cores escolhidas de forma de refletir os fatores usados. 
+Existem diversas funções de escala. Veremos duas interessantes e muito usadas. São elas: a que determina a apariência das escalas em ambos eixos, "x" e "y" e a que controla a escala de cores, colocando nomes nas cores escolhidas de forma de refletir os fatores usados. 
 
 Veja o exemplo:
 
@@ -67,7 +67,7 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species)) +
 
 ```
 
-As escalas usadas foram para escala de variáveis contínuas nos eixos e discreta na cor, consulte a ajuda para escalas de variáveis discretas e cor contínua.
+Foram usadas escalas de variáveis contínuas nos eixos (x, y) e escala discreta para fatorizar por cor, consulte a ajuda para escalas de variáveis discretas e cor contínua.
 
 ---
 
@@ -79,7 +79,7 @@ Nos exercícios a seguir, toda instrução que tenha a
 
 ---
 
-#### **_<span style="color:blue">Exercício 01. Com a base de dados mtcars, faça um gráfico das variáveis "disp" e "mpg", use a variável "cyl" para separar por fatores e dê cor em cada um. Adicione título e legendas nos eixos. As escalas dos eixos devem ser: 0-500 e 0-40 respectivamente, escolha o intervalo que crea adequado, </span>_**
+#### **_<span style="color:blue">Exercício 01. Com a base de dados mtcars, faça um gráfico das variáveis "disp" e "mpg", use a variável "cyl" para separar por fatores e dê cor em cada um. Adicione título e legendas nos eixos. As escalas dos eixos devem ser: 0-500 e 0-40 respectivamente, escolha o intervalo que julgar adequado, </span>_**
 
 ---
 
@@ -113,9 +113,9 @@ ggplot(mtcars, aes(x=disp, y = mpg, col = factor(cyl)))             +
 
 ---
 
-Os parâmetros estéticos podem ser colocados de duas forma: 
+Os parâmetros estéticos podem ser colocados de duas formas: 
 
-  - inicialmente na primeira camada, junto à definição dos dados e o mapeamento de variáveis, ou
+  - inicialmente na primeira camada, junto à definição dos dados e o mapeamento de variáveis, ou;
   
   - em cada camada individualmente.
 
@@ -129,7 +129,7 @@ Exemplo
 ---
 
 ```{r ggplot04, fig.align='center'}
-# primeiro gráfico, a cor está definida globalmente acorde factor(cyl)
+# primeiro gráfico, a cor está definida globalmente de acordo com factor(cyl)
 ggplot(mtcars, aes(x=disp, y = mpg, col = factor(cyl)))             +
   geom_point() 
 
@@ -146,9 +146,9 @@ No caso da geometria de pontos, o esencial é "x" e "y", que pode estar definido
 
 **Assim sendo temos a possibilidade controlar o aspecto de cada camada independentemente das outras.**
 
-Vejamos o seguinte exemplo. Nele vamos graficar os pontos e as médias das três especies da flor "iris".
+Vejamos o seguinte exemplo a seguir, nele vamos graficar os pontos e as médias das três especies da flor "iris".
 
-Para isso vamos calcular primeiro a média por espécie e guardar numa variável **"iris.resumo"**. Para isso veja a função ?aggregate, que divide um dataframe em subconjuntos e para cada um deles, aplica uma função. 
+Para isso vamos calcular primeiro a média por espécie e guardar numa variável **"iris.resumo"**. Veja a função ?aggregate, que divide um dataframe em subconjuntos e para cada um deles, aplica uma função. 
 
 No nosso caso, vamos usar o dataframe "iris", columnas 1 a 4, agrupadas pela coluna 5, "Species" e para cada grupo calculamos a média:
 
@@ -164,9 +164,9 @@ iris.resumo
 
 ---
 
-Na sequência vamos graficar os pontos, evitando a sobreposição e colorindo por espécie e adicionar depois uma terceira camada com as médias de cada espécie, com simbolo e tamanho diferente, mas cor idêntica e transparência de 0.6.
-
-A quarta camada vai dar o nome na legenda, como já feito em exemplos anteriores.
+Na sequência vamos graficar os pontos, evitando a sobreposição e colorindo por espécie.
+Adicionar depois uma terceira camada com as médias de cada espécie, com símbolo e
+tamanho diferentes, mas cor idêntica e transparência de 0.6. A quarta camada vai atribuir nome na legenda, como já feito em exemplos anteriores.
 
 ---
 
@@ -186,8 +186,8 @@ ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, col = Species))       +
 
 ---
 
-Na escolha das formas, temos 25 diferentes, sendo as últimas 5 com preenchimento de cor e borda diferenciado, veja
-?aes_linetype_size_shape.
+Na escolha das formas, existem 25 diferentes, sendo as últimas cinco com preenchimento de
+cor e borda diferenciados, veja ?aes_linetype_size_shape.
 
 ---
 
@@ -210,9 +210,9 @@ s + geom_point(aes(shape = z), size = 4, colour = "Red", fill = "Black") +
 
 ---
 
-#### **_<span style="color:blue">Exercício 02. Com a base de dados "mtcars"", calcule primeiro as médias dos valores de "mpg" e "qsec", depois faça um gráfico das variáveis "mpg" e "qsec", usando a variável "gear" e dê cor em cada um.</span>_** 
+#### **_<span style="color:blue">Exercício 02. Com a base de dados "mtcars"", calcule primeiro as médias dos valores de "mpg" e "qsec", depois faça um gráfico das variáveis "mpg" e "qsec", usando a variável "gear" e atribua cor a cada um.</span>_** 
 
-#### **_<span style="color:blue">Adicione uma camada com as médias calculadas, com forma 24, de borda vermelha e preenchimento preto, use alpha =0.5. Adicione título e tema a sua escolha. </span>_**
+#### **_<span style="color:blue">Adicione uma camada com as médias calculadas, com forma 24, borda vermelha e preenchimento preto, use alpha =0.5. Adicione título e tema a sua escolhaa. </span>_**
 
 ---
 
@@ -260,9 +260,11 @@ ggplot(mtcars, aes(x = mpg, y = qsec, col = factor(gear)) )             +
 
 Existem pacotes específicos para tratar e visualizar séries temporais. O próprio lines() do R base pode ser usado, assim como o pacote **stats** permite transformar dados em série temporal (**ts**) e graficar em forma fácil (**ts.plt**). O uso de **plot()** + **lines()** também é possível, com o cuidado de ver a variação de escala quando adicionamos mais de uma linha.
 
-Vamos mostrar um exemplo de gráfico temporal. Criamos o dataframe ou importamos os dados e logo fazemos um gráfico temporal. Neste caso específico a variável que representa os dados não está definida como tipo "data", mas como fator, isso porque os dados contém apenas valores de médias sem especificar outro tipo de data. 
-
-Atentar como se cria uma determinada ordem para graficar depois os dados, usando "levels  = ...".
+Mostraremos um exemplo de gráfico temporal. Criamos o dataframe ou importamos os dados
+e logo elaboramos um gráfico temporal. Neste caso específico, a variável que representa os
+dados não está definida como tipo “data”, mas como fator. Isto porque os dados contém
+apenas valores de médias sem especificar outro tipo de data. Fique atento ao modo como uma
+determinada ordem é criada para depois graficar os dados usando “levels = …”
 
 ---
 
@@ -327,9 +329,12 @@ ggplot(media.temp, aes(x = meses, y = temp, group = cidades, color = cidades))  
 
 ---
 
-As séries temporais podem vir em dois tipos diferentes, como dado tabular, geralmente importado como dataframe, ou como objeto R **"Time-Series"**.
+As séries temporais podem aparecer em dois tipos diferentes: como dado tabular, geralmente
+importado como dataframe, ou como objeto R **"Time-Series"**.
 
-Como dataframe, uma variável deve indicar o tempo de cada registro, seu formato pode ser de apenas ano, ano-mes-dia ou combinações incluindo horas, mas o importante e que primeiro devemos definir a variável que representa as datas como de tipo "Date". Isso pode ser feito com diversos pacotes, incluindo "as.Date" ou "lubridate::as_Date" (veja a documentação da AED - I).
+Como dataframe, uma variável deve indicar o tempo de cada registro. Seu formato pode ser:
+apenas ano, ano-mês-dia ou combinações incluindo horas. O importante é que primeiro
+devemos definir a variável que representa as datas como de tipo “Date”. Isso pode ser feito com diversos pacotes, incluindo "as.Date" ou "lubridate::as_Date" (veja a documentação da AED – I).
 
 Feito ou verificado isso, **ggplot2** reconhece a variável como data e trata como tal.
 
@@ -357,7 +362,8 @@ ggplot(economics_long, aes(date, value01, colour = variable)) +
 
 ---
 
-No caso de objetos R do tipo **"Time-Series"**, para ser visualizada corretamente com ggplot2, ela deve ser convertida em dataframe. Temos diversas maneiras de fazer a operação:
+Para que objetos R do tipo “Time-Series” possam ser visualizados corretamente com ggplot2,
+devem ser convertidos em dataframe. Existem diversas maneiras de realizar essa operação:
 
   1- forçando a variável com **"as.data.frame.ts()"**;
   
@@ -383,7 +389,7 @@ autoplot(sunspot.year, ts.colour = 'red', ts.linetype = 'dashed') +
 ---
 
 
-#### **_<span style="color:blue">Exercício 04. No seguinte fragmento do código, personaliza os eixos "x" e "y", dando nome, limites e intervalos a sua escolha</span>_** 
+#### **_<span style="color:blue">Exercício 04. No seguinte fragmento do código, personalize os eixos "x" e "y", atribuindo nome, limites e intervalos a sua escolha</span>_** 
 
 ---
 
@@ -435,12 +441,14 @@ autoplot(eco[,2:5], facets = F)
 
 ####DICA 
 
-No gráfico da série temporal para diversas variáveis, a amplitude apresenta uma grande variação, fazendo que um gráfico com elas num eixo único, fique confuso, como ocorre nesse último gráfico com facets. 
+No gráfico da série temporal para diversas variáveis, a amplitude apresenta uma grande
+variação, fazendo com que um gráfico com as variáveis em um eixo único fique confuso, como
+ocorre nesse último gráfico com facets.
 
-Para colocar todas as variáveis desejadas num intervalo pre-determinado, usamos uma fórmula aplicada em forma individual para cada uma delas.
+Para colocar todas as variáveis desejadas num intervalo pré-determinado, usamos uma fórmula
+aplicada de forma individual para cada uma delas.
 
-
- Fórmula de re-escala em intervalos definidos: $\ max_{novo} , mín_{novo}$, a fórmula seria:
+Fórmula de reescala em intervalos definidos $\ max_{novo} , mín_{novo}$, a fórmula será:
 
 
 $$n_{novo} = \frac {max_{novo} - mín_{novo}}{max_{velho}-mín_{velho}} X (n_{velho} - max_{velho}) + max_{novo}$$ 

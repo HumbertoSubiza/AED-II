@@ -50,7 +50,7 @@ O gráfico de barras é um dos mais usados para visualizar dados categóricos.
 
 As barras representam o número ou proporção de elementos em cada categoria, fator ou nivel.
 
-Primeiro um gráfico simples de barra a partir dos dados em **ggplot::mpg**, em que usaremos a variável "class".
+Façamos primeiro um gráfico simples de barra a partir dos dados em **ggplot::mpg**, em que usaremos a variável "class".
 
 
 ####**_<span style="color:blue">conheça seus dados!</span>_** 
@@ -110,9 +110,9 @@ graf +
 
 ---
 
-Um problema recorrente quando queremos fazer um gráfico por categorias é a ordem em que aparecem, que obedece apenas a uma classificação alfabética ou as vezes à ordem em que se apresentam as variáveis. 
+Um problema recorrente quando queremos fazer um gráfico por categorias é a ordem em que aparecem, obedecendo apenas a uma classificação alfabética ou as vezes à ordem em que se apresentam as variáveis. 
 
-Para trocar o ordenamento, podemos fazer uma pequena função que calcula uma tabela de frequências dos dados e logo após ordena em forma crescente por número de elementos em cada categoria.
+Para trocar a ordem, podemos fazer uma pequena função que calcula uma tabela de frequências dos dados e, logo após ordena em forma crescente por número de elementos em cada categoria.
 
 ---
 
@@ -134,7 +134,7 @@ ggplot(mpg, aes(reorder_size(class))) +
 
 ####**_<span style="color:blue">Exercício 01</span>_**
 
-####**_<span style="color:blue">Faça um gráfico de barras empilhado do tipo de carro, separado por tipo de combustivel; adicione um título, subtítulo e pê de página (seu nome e SIAPE) e tema a sua escolha; coloque nomes nos eixos.</span>_**
+####**_<span style="color:blue">Faça um gráfico de barras empilhado do tipo de carro, separado por tipo de combustivel. Adicione um título, subtítulo e rodapé de página (seu nome e SIAPE) e tema a sua escolha. Coloque nomes nos eixos.</span>_**
 
 ---
 
@@ -149,7 +149,7 @@ ggplot(mpg, aes(class))                          +
   geom_bar(aes(fill = fl), position = "fill")    +
     labs(title    = "Gráfico de barras - cores acorde tipo de combustível", 
          subtitle = "Fonte: EPA - USA",
-         caption  = "Criado por: WHSP - 144887") +
+         caption  = "Criado por: WHSP - 1494887")+
         xlab ("Classes de carros")               +
         ylab ("Percentagem do total")            +
           theme_classic()
@@ -160,7 +160,7 @@ ggplot(mpg, aes(class))                          +
 
 #### Gráfico boxplot 
 
-Outro gráfico muito usado é o **boxplot**. Ele nos ajuda a identificar valores discrepantes ou **outliers**. Como sempre começamos com uma camada de dados e o seu mapeamento (aes) para logo após adicionar as camadas complementares. 
+Outro gráfico muito usado é o **boxplot**. Ele nos ajuda a identificar valores discrepantes ou **outliers**. Como sempre começamos com uma camada de dados e o seu mapeamento (aes) para, logo após, adicionar as camadas complementares. 
 
 A camada para boxplot é **geom_boxplot**. Faremos no primeiro gráfico um boxplot simples, por categoria de carro e no segundo gráfico vamos adicionar uma terceira camada com os pontos, veja as opções de estética dessa camada.
 
@@ -186,7 +186,7 @@ graf2                                   +
 
 ---
 
-Note que no segundo gráfico, e devido ao tipo de geometria adicionado (geom_jitter) foi possível discriminar os diversos pontos que componem os outliers visualizados como únicos no primeiro gráfico. 
+Note que no segundo gráfico, devido ao tipo de geometria adicionado (geom_jitter) foi possível discriminar os diversos pontos que componem os outliers visualizados como únicos no primeiro gráfico. 
 
 Esses outliers podem ser destacados da seguinte forma (ver a ordem das camadas e o gráfico resultado):
 
@@ -201,7 +201,7 @@ graf2                                                                 +
   geom_boxplot()                                                      +                               
           geom_jitter(width = 0.2, alpha=0.4)                         +
             geom_boxplot(outlier.colour = "red", outlier.shape = 1.8) +
-              labs(title ="Boxplot com pontos adicionados e outliers em vermelho") 
+              labs(title ="Boxplot com pontos adicionados\n e outliers em vermelho") 
                     
 # o boxplot também pode ter os eixos invertidos
 graf2 + geom_boxplot()                                                   +
@@ -215,7 +215,7 @@ graf2 + geom_boxplot()                                                   +
 
 ####**_<span style="color:blue">Exercício 02</span>_**
 
-####**_<span style="color:blue">Crie um gráfico de boxplot das variáveis "drv" e "cty". Grafique os pontos com separação (jitter). Coloque títulos nos eixos e principale  deixe os boxplot na horizontal, finalmente adicione um tema a sua escolha</span>_**
+####**_<span style="color:blue">Crie um gráfico de boxplot das variáveis "drv" e "cty"; grafique os pontos com separação (jitter); coloque títulos nos eixos e principale  deixe os boxplot na horizontal; adicione um tema a sua escolha</span>_**
 
 ---
 
@@ -239,7 +239,7 @@ ggplot(mpg, aes(drv, cty))                +
 
 #### Gráfico de histogramas
 
-O histograma calcula-se em forma semelhante ao gráfico de barras mas para variáveis quantitativas. O procedimento consiste em dividir os elementos da variável em grupos ou "bins" acorde seu valor e contar a quantidade de elementos em cada um eles. 
+O histograma é calculado em forma semelhante ao gráfico de barras mas para variáveis quantitativas. O procedimento consiste em dividir os elementos da variável em grupos ou "bins" de acordo com seu valor e contar a quantidade de elementos em cada um eles. 
 
 Feito isso o gráfico é construído com os valores da variável de cada "bin" no eixo "x" e a quantidade de elementos no eixo "y". Diferente do gráfico de barras, os grupos são contínuos, como a variável, e graficados sem espaço entre eles. 
 
@@ -265,19 +265,19 @@ ggplot(diamonds, aes(depth)) +
 
 ---
 
-Observe que dependendo da escolha do tamanho do grupo ou sua quantidade, o histograma muda de apariência, a escolha final é sua!
+Observe que, dependendo da escolha do tamanho do grupo ou sua quantidade, o histograma muda de apariência. A escolha final é sua!
 
 ---
 
 Os histogramas também podem ser calculados para diversos fatores ou níveis de uma categoria.
 
-No próximo gráfico vamos calcular histogramas para a variável "price", usando os níveis da variável "cut". 
+No próximo gráfico calcularemos histogramas para a variável "price", usando os níveis da variável "cut". 
 
-O procedimento seria: primeiro separar a variável por níveis, depois fazer o histograma para cada nível e finalmente empilhar os histogramas. 
+O procedimento será: primeiro separar a variável por níveis, depois fazer o histograma para cada nível e finalmente empilhar os histogramas. 
 
 Como essa visualização pode ficar muito poluída, as vezes é melhor fazer a comparação por frequências. 
 
-Nos próximos dois gráficos apresentaremos as duas opções.
+Nos próximos dois gráficos serão apresentadas as duas opções.
 
 ---
 
@@ -295,7 +295,7 @@ ggplot(diamonds, aes(price, colour = cut)) +
 
 ####**_<span style="color:blue">Exercício 03</span>_**
 
-####**_<span style="color:blue">Usando a base de dados "iris", faça o histograma da variável Sepal.Length e dando cor separado por espécies e um tema de fundo tipo classico</span>_**
+####**_<span style="color:blue">Usando a base de dados "iris", faça o histograma da variável Sepal.Length, atribuindo cores separado por espécies e um tema de fundo tipo classico</span>_**
 
 ---
 
@@ -314,9 +314,9 @@ ggplot(iris, aes(Sepal.Length, fill = Species))              +
 
 #### Desenho de linhas
 
-Para desenhar linhas em **ggplot** usamos **geom_line()**, que é parte de uma geometria maior que permite conectar observações. Veja **?geom_path** para maiores detalhes. 
+Para desenhar linhas em **ggplot** usamos a função **geom_line()**, a qual é parte de uma geometria maior que permite conectar observações. Veja **?geom_path** para maiores detalhes. 
 
-**geom_line()** conecta observações na ordem em que aparecem no eixo "x".
+A função **geom_line()** conecta observações na ordem em que aparecem no eixo "x".
 
 Para desenhar linhas de referência podemos usar:
 
@@ -348,9 +348,9 @@ graf4 +
 
 ####**_<span style="color:blue">Usando "graf4":</span>_** 
 
-####**_<span style="color:blue">1- desenhar linhas horizontais em 30, 25, 20 e 15, de cor azul</span>_**
+####**_<span style="color:blue">1- desenhe linhas horizontais em 30, 25, 20 e 15, de cor azul</span>_**
 
-####**_<span style="color:blue">2- desenhar uma linha vertical de valor 3, na cor vermelha e largura 1.2</span>_**
+####**_<span style="color:blue">2- desenhe uma linha vertical de valor 3, na cor vermelha e largura 1.2</span>_**
 
 ####**_<span style="color:blue">3- adicione legendas nos eixos e titulo principal a sua escolha</span>_**
 
@@ -377,13 +377,13 @@ graf4                                                     +
 
 #### Gráfico de linhas 2
 
-Vamos mostrar como plotar uma linha de regressão (existem diversas formas no R, como sempre!). 
+Mostraremos como plotar uma linha de regressão (existem diversas formas no R, como sempre!). 
 
-A regressão vai ser feita com as variáveis "wt" e "mpg", já conhecidas, reaproveitando o cálculo de graf4, que tem os dados e os pontos num objeto gráfico só.
+A regressão será feita com as variáveis "wt" e "mpg", já conhecidas, reaproveitando o cálculo de graf4, que tem os dados e os pontos num só objeto gráfico .
 
-Para isso a calculamos a regressão com a função **lm()** e guardamos os coeficientes, que serão chamados posteriormente dentro da camada **geom_abline**. 
+Para isso calculamos a regressão com a função **lm()** e guardamos os coeficientes, que serão chamados posteriormente dentro da camada **geom_abline**. 
 
-Na sequência fazemos o mesmo procedimento duma forma mais direta com **geom_smooth()**
+Na sequência faremos o mesmo procedimento duma forma mais direta com **geom_smooth()**
 
 ---
 
@@ -508,7 +508,7 @@ qqplot.data(mtcars$mpg)
 
 ---
 
-Finalmente podemos aplicar esta metodologia para vários fatores  de uma variável. 
+Finalmente podemos aplicar essa metodologia para vários fatores  de uma variável. 
 
 O seguinte exemplo, está baseado numa função disponível na mesma página de **stackoverflow** mencionada acima.
 
@@ -516,7 +516,7 @@ Cria-se uma função para calcular os valores teóricos dos quantís a partir de
 
 Os dados a serem usados são os da base "ggplot2:mpg", a variável a ser analisada é "hwy" e as variáveis de classificação serão "cyl" e "drv".  
 
-Assim sendo, vamos analisar o rendimento dos carros em milhas por galão em estradas, acorde ao número de cilindros e tipo de transmissão de cada carro. Verificaremos se os valores tem uma distribuição normal com gráficos individuais QQ.
+Assim sendo, analisaremos o rendimento dos carros em milhas por galão em estradas, de acordo com o número de cilindros e tipo de transmissão de cada carro. Verificaremos se os valores tem uma distribuição normal com gráficos individuais QQ.
 
 ---
 
@@ -545,7 +545,7 @@ ggplot(data = df5, aes(x = xq, y = hwy))  +
 
 ---
 
-#### **_<span style="color:blue">Exercício 06.Analisar o rendimento em cidade dos carros, baseado no tipo de carro e combustível usado. Dica: a função _qqnorm_data_, já foi criada no gráfico anterior.</span>_**
+#### **_<span style="color:blue">Exercício 06.Analise o rendimento em cidade dos carros, baseado no tipo de carro e combustível usado. Dica: a função _qqnorm_data_, já foi criada no gráfico anterior.</span>_**
 
 ---
 
