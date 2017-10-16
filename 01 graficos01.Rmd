@@ -8,13 +8,18 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.align ='center',
+                      fig.path  ='figuras/', 
+                      fig.ext   ='jpeg')
 old.par <- par(no.readonly = TRUE)
 ```
 
 ## Capítulo 2 - Gráficos com plot() 01
 
 ## a - _plot()_ ando gráficos
+
+**pacotes a serem instalados/carregados: insuranceData**
 
 A criaçao de gráficos é uma arte e um processo totalmente interativo e iterativo enquanto encontramos, modificando diversos argumentos, a aparência final do nosso gráfico. 
 
@@ -49,7 +54,7 @@ Vejamos o exemplo, usando o conjunto de dados "cars":
 
 ---
 
-```{r plot01, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
+```{r plot01 }
 head(cars)
 plot(cars$dist)
 ```
@@ -187,7 +192,7 @@ Com o comando do exercício anterior, experimente usar o argumento _breaks_ com 
 
 ---
 
-```{r plot06, fig.align='center'}
+```{r plot06}
 # sua solução
 
 ```
@@ -213,7 +218,7 @@ Note o uso de “\n” no título principal para quebrar a legenda em dois parâ
 ---
 
 
-```{r plot07, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
+```{r plot07}
 hist(iris$Sepal.Width,
      probability = T,
      breaks      = 10,
@@ -248,7 +253,7 @@ A função específica _barplot()_ elabora a partir de uma tabela prévia, o gr�
 
 ---
 
-```{r plot08, fig.align='center'}
+```{r plot08}
 barplot(table(iris$Species))
 
 ```
@@ -269,7 +274,7 @@ Para ter categorias em número diferentes, vamos usar a base de dados _mtcars_ e
 
 ---
 
-```{r plot09, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
+```{r plot09}
 tab <- table (mtcars$gear)
 tab
 # Configurando o espaço gráfico para dois gráficos na mesma linha
@@ -296,7 +301,7 @@ tipo de carro. Na sequência, vamos plotar dois gráficos: barras com  _barplot(
 
 ---
 
-```{r plot10, fig.align='center', fig.path='figuras/', fig.ext='jpeg'}
+```{r plot10}
 # Carrega o pacote insuranceData
 library(insuranceData)
 
