@@ -15,7 +15,7 @@ library(MASS)
 
 ---
 
-## Capítulo 3 - Visualização de dados com _ggplot2()_
+## Capítulo 3 - Visualização de dados com _ggplot2_
 
 ## a - Conceitos, elementos e primeiro gráfico
 
@@ -52,8 +52,8 @@ O gráfico é um mapeamento de dados, a partir de atributos estéticos de objeto
 
 |  Elemento        |          Descrição                                   |
 |------------------|------------------------------------------------------|
-| Fatores (Facets)   |         Gráficos múltiplos por categoria|
-| Estatísticas (Statistics)|   Representação dos dados para ajudar na compreensão|
+| Fatores (Facets)   |         Gráficos múltiplos separados por categoria|
+| Estatísticas (Statistics)|   Representação dos dados através de elementos estatísticos para ajudar na compreensão|
 | Coordenadas (coordinates) |  O espaço onde os dados serão representados|
 | Temas (themes) |             Aparência ou aspecto|
 
@@ -79,17 +79,23 @@ Nos exercícios a seguir, toda instrução que tenha a
 
 ---
 
+Neste templete temos: um espaço gráfico (*ggplot*) onde sinalizamos de que fonte serão extraídos os dados (*data = *), os elementos destes dados que serão mapeados (*aes()*) e se inclue uma representação gráfica através de um tipo geométrico (*geom_function*). A adição das diferentes camadas se realiza através do símbolo *+* no final de cada linha.
+
+---
+
 
 #### Ordenamentos dos dados
 
-    dados + aesthetics + 
-      geometrias    + 
-      fatores       + 
-      estatísticas  + 
-      coordenadas   +
+Os elementos apresentados nas tabelas acima podem ser ordenados da seguinte forma:
+
+    dados e aesthetics + 
+      geometrias       + 
+      fatores          + 
+      estatísticas     + 
+      coordenadas      +
       temas
 
-Nos próximos exemplos começaremos com um gráfico simples até apresentar um gráfico elaborado e, como diz Hadley, "elegante", perfeitamente adequado para a publicação, inclusão num relatório ou trabalho acadêmico.
+Nos próximos exemplos começaremos com um gráfico simples até apresentar um gráfico elaborado e, como diz Hadley, "elegante", perfeitamente adequado para a publicação, e inclusão num relatório ou trabalho acadêmico.
 
 ---
 
@@ -102,10 +108,10 @@ Para o gráfico vamos indicar ao **ggplot** que vamos trabalhar com o dataframe 
 
 ```{r  ggplot_3_01, message=FALSE, fig.align='center'}
 ggplot(mammals, aes(x = body, y = brain)) + # estes são os dados e o mapeamento
-  geom_point() # camada de geometria adicionada, no caso, pontos
+  geom_point()                             # camada de geometria adicionada, no caso, pontos
 ```
 
-No gráfico acima temos apenas duas camadas: os dados na primeira e o tipo de representação na segunda, apenas pontos. O **ggplot** vai escolher por nós o resto dos elementos como cor dos pontos, limites dos eixos, legendas e aspecto do gráfico. Todos esses elementos e muitos outros podem ser personalizados como veremos mais adiante.
+No gráfico acima temos apenas duas camadas: os dados na primeira e o tipo de representação na segunda. O **ggplot** vai escolher por nós o resto dos elementos como cor dos pontos, limites dos eixos, legendas e aspecto do gráfico. Todos esses elementos e muitos outros podem ser personalizados como veremos mais adiante.
 
 ---
 
@@ -115,25 +121,27 @@ No gráfico acima temos apenas duas camadas: os dados na primeira e o tipo de re
 
 #### 2- gráfico com linha de regressão
 
-Adicionamos às camadas anteriores uma camada complementar de estatística, o gráfico da linha simples de regressão linear. 
+Adicionamos às camadas anteriores uma camada complementar de estatística, o gráfico da linha de regressão linear. 
 
-Notem que não é necessário fazer nenhum tipo de cálculo prévio, apenas incluir na camada que a metodologia é **"lm"** e indicar uma cor vermelha para o traçado. Também não será necessário o intervalo de confiança da regressão, indicado por **"se = F"**. 
+Notem que não é necessário fazer nenhum tipo de cálculo prévio, apenas incluir na camada que a metodologia é **"lm"** e indicar uma cor vermelha para o traçado. Também não será necessário o intervalo de confiança da regressão, que será eliminado pelo argumento **"se = F"**. 
 
-A adição de **_smooth** na chamada da estatística, introduz um fator de suavizado na linha graficada (ver a ajuda). Além disso será adicionada uma transparência aos pontos graficados para melhor visualização de sobreposição.
+A adição de **\_smooth** na chamada da estatística, introduz um fator de suavizado na linha graficada (ver a ajuda). Além disso será adicionada uma transparência aos pontos graficados para melhor visualização de sobreposição.
 
 ---
 
 ```{r ggplot_3_02, fig.align='center'}
 ggplot(mammals, aes(x = body, y = brain)) +
-  geom_point(alpha = 0.6) +
-  stat_smooth(method = "lm", col = "red", se = F)
+  geom_point(alpha   = 0.6)               + # transpârencia
+  stat_smooth(method = "lm",                # linha de regressão linear
+              col    = "red",               # cor vermelho
+              se     = F)
 ```
 
 ---
 
 Analisando o gráfico é possível perceber que os dados necessitam de uma transformação de escala, já que existe disparidade de valores e concentração dos valores menores. 
 
-Uma transformação log pode resolver o problema. Para manter a relação de unidades entre os eixos, adicionamos uma camada **coord_fixed()**, que por padrão vai manter a relação y/x = 1.
+Uma transformação _log_ pode resolver o problema. Para manter a relação de unidades entre os eixos, adicionamos uma camada **coord_fixed()**, que por padrão vai manter a relação y/x = 1.
 
 Na sequência transforma-se os eixos com log10 e finalmente adiciona-se a linha de regressão, indicando  a cor em sistema RGB de representação e o tamanho como 1.
 
@@ -160,29 +168,39 @@ Nota-se que a transformação melhorou o aspecto do gráfico e a análise dos da
 
 #### Formato para publicação
 
-Para deixar finalmente nosso gráfico num formato adequado para publicação e apresentação, será necessário padronizar os intervalos em ambos eixos, adicionar um título e subtítulo, indicando a fonte dos dados e finalmente deixar o gráfico apenas em preto e branco (já que muitas editoras não permitem outras cores), sem fundo colorido e sem grade.
+Para deixar finalmente nosso gráfico num formato adequado para publicação e apresentação, será necessário padronizar os intervalos em ambos eixos, adicionar um título e subtítulo, indicando a fonte dos dados e finalmente deixar o gráfico apenas em preto e branco (já que muitas editoras não permitem outras cores), sem fundo colorido e sem grade. Os espaços extras entre funções tem a finalidade de esclarecer os argumentos de cada uma.
 
 ---
 
 ```{r ggplot_3_04, fig.align='center'}
 library(scales)
-ggplot(mammals, aes(x = body, y = brain)) +                     # dados
-  geom_point(size = 1.8, alpha = 0.6) +                        # tipo de geometria
-  coord_fixed(xlim = c(10^-3, 10^4), ylim = c(10^-1, 10^4)) + # escala em ambos eixos
-    annotation_logticks() +      # adiciona espaços cada vez menores, faz sentido apenas para eixos log
-  scale_x_log10(expression ("Peso Corporal (log" ["10"]*" (Kg))"),      # escala logaritmica "x", titulo
+
+ggplot(mammals, aes(x = body, y = brain)) + # dados
+
+      geom_point(size = 1.8, alpha = 0.6) + # tipo de geometria
+
+      coord_fixed(xlim = c(10^-3, 10^4), 
+                  ylim = c(10^-1, 10^4))  + # escala em ambos eixos
+
+        annotation_logticks()             + # adiciona espaços cada vez menores, apenas para eixos log
+
+    scale_x_log10(expression ("Peso Corporal (log" ["10"]*" (Kg))"),      # escala logaritmica "x", titulo
                   breaks = trans_breaks("log10", function(x) 10^x),     # intervalos
                   labels = trans_format("log10", math_format(10^.x))) + # etiquetas
-  scale_y_log10(expression ("Peso Cerebro (log" ["10"]*" (g))"),        # escala logaritmica "y", titulo
+
+    scale_y_log10(expression ("Peso Cerebro (log" ["10"]*" (g))"),        # escala logaritmica "y", titulo
                   breaks = trans_breaks("log10", function(x) 10^x),     # intervalos
                   labels = trans_format("log10", math_format(10^.x))) + # etiquetas
-    stat_smooth(method = "lm",  # linha de regressão
-              col      = "black",   # cor
-              se       = F,          # sem intervalo de confiança
-              size     = 1) +      # tamanh0
-  labs(title    = " Relação entre peso do cerebro e do corpo - 62 mamiferos", # título e sub
-       subtitle = "Fonte: pacote R::MASS ") +
-  theme_classic()                                                        # tema de fundo
+
+      stat_smooth(method = "lm",     # linha de regressão
+                 col     = "black",   # cor
+                 se      = F,          # sem intervalo de confiança
+                 size    = 1)    +      # tamanh0
+
+    labs(title    = " Relação entre peso do cerebro e do corpo - 62 mamiferos", # título e sub
+         subtitle = "Fonte: pacote R::MASS ")    +
+
+    theme_classic()                                                        # tema de fundo
 ```
 
 ---
@@ -279,15 +297,15 @@ De esta forma, colocamos todos os gráficos na mesma escala numérica e de apar�
 
 ```{r ggplot_3_10, fig.align='center', warning=FALSE}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-  geom_jitter(alpha = 0.6) +
-  facet_grid(. ~ Species)  +
-  stat_smooth(method = "lm", se = F, col = "red") +
+  geom_jitter(alpha = 0.6)                           +
+  facet_grid(. ~ Species)                            +
+  stat_smooth(method = "lm", se = F, col = "red")    +
   scale_x_continuous("Comprimento Sepal (cm)",
-                     limits = c(3,8),
-                     expand = c(0.2,0.1)) +
+                     limits = c(3, 8),
+                     expand = c(0.2, 0.1))            +
   scale_y_continuous("Largura Sepal (cm)",
-                     limits = c(2,5),
-                     expand = c(0.2,0.1)) +
+                     limits = c(2, 5),
+                     expand = c(0.2, 0.1))           +
   coord_equal()
 ```
 
@@ -299,16 +317,16 @@ Finalmente na _sexta camada_ adicionamos um tema ou aparença personalizada, no 
 
 ```{r ggplot_3_11, fig.align='center', warning=FALSE}
 ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width)) +
-  geom_jitter(alpha = 0.6) +
-  facet_grid(. ~ Species)  +
-  stat_smooth(method = "lm", se = F, col = "red") +
+  geom_jitter(alpha = 0.6)                           +
+  facet_grid(. ~ Species)                            +
+  stat_smooth(method = "lm", se = F, col = "red")    +
   scale_x_continuous("Comprimento Sepal (cm)",
-                     limits = c(3,8),
-                     expand = c(0.2,0.1)) +
+                     limits = c(3, 8),
+                     expand = c(0.2, 0.1))           +
   scale_y_continuous("Largura Sepal (cm)",
-                     limits = c(3,8),
-                     expand = c(0.2,0.1)) +
-  coord_equal() +
+                     limits = c(3, 8),
+                     expand = c(0.2, 0.1))           +
+  coord_equal()                                      +
   theme_light()
 
 ```

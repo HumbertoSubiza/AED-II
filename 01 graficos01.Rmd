@@ -17,7 +17,7 @@ old.par <- par(no.readonly = TRUE)
 
 ## Capítulo 2 - Gráficos com plot() 01
 
-## a - _plot()_ ando gráficos
+## a - _plot() ando_ gráficos
 
 **pacotes a serem instalados/carregados: insuranceData**
 
